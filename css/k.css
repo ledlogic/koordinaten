@@ -1,0 +1,31 @@
+* {
+	font-family: 'Microgramma Extd D Medium', 'Microgramma Extd D', sans-serif;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	align-items: center;
+	background: #000;
+	justify-content: center;
+	margin: 0;
+}
+
+header {
+	background: #1c1c1c;
+	border: 1px solid #fff; color : #fff;
+	font-size: 1.5em;
+	padding: 4px;
+	margin: 20px;
+	color: #fff;
+}
+
+section.k-canvas {
+	border: 1px solid #fff; color : #fff;
+	padding: 4px;
+	margin: 20px;
+	height: 100%;
+	text-align: center;
+}
