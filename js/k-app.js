@@ -1,15 +1,19 @@
 var kApp = {
 	size: [],
 	init: function() {
+		kApp.sizeCanvas();
   	    var w = Math.floor($("#k-canvas").width());
 		var h = Math.floor($("#k-canvas").height());
 		console.log([w,h]);
 		var rect = new kApp.geom.rect(-w/2, w/2, -h/2, h/2);
 		var size = new kApp.geom.size(w, h, rect);
 		console.log(size);
-		kApp.initialSize = size
+		kApp.initialSize = size;
 		kApp.size = kApp.initialSize;
 		kApp.bg.init(kApp.initialSize);
+
+		var c = createCanvas(kApp.size.cWidth, kApp.size.cHeight);
+		c.parent('k-canvas');
 	},
 	ptR2C: function(x, y) {
 		var ret = [];
@@ -21,10 +25,18 @@ var kApp = {
 		console.log(s);
 	},
 	sizeCanvas: function() {
-	  var w = $("#k-canvas").width();
-	  var h = $("#k-canvas").height();
-	  $("#k-canvas canvas").width(w);
-	  $("#k-canvas canvas").height(h);
+		// @see http://jsfiddle.net/b5DGj/7/
+		var wh = document.body.clientHeight;
+		var $h = $("header");
+		var hms = parseInt($h.css("marginTop"),10);
+		var hh = $h.height();
+		var $f = $("footer");
+		var fms = parseInt($f.css("marginTop"),10);
+		var fh = $f.height();
+		var h = wh - hh - hms * 2 - fh - fms * 2;
+		console.log([wh,hms,hh,fh,h]);		
+		var $el = $('#k-canvas');
+		$el.height(h);
 	}
 };
 
@@ -44,6 +56,8 @@ kApp.render = {
 		var fps = frameRate();
 		fill(255);
 		stroke(0);
+		textSize(14);
+		textFont('Microgramma Extd D');
 		text("FPS: " + fps.toFixed(0), 10, height - 10);
 	},
 	grid: function() {
@@ -90,14 +104,15 @@ kApp.render = {
 		}
 		
 		// major ellipses
-		//noFill();
-		//var pt1 = kApp.ptR2C(0, 0);
-		//for (var x=xMin; x<0; x+= major) {
-		//	var pt2 = kApp.ptR2C(x, 0);
-		//	var w = Math.abs(2*pt2.x);
-		//	var h = Math.abs(2*pt2.x);
-		//	ellipse(pt1.x, pt1.y, w, h);
-		//}
+		noFill();
+		var pt1 = kApp.ptR2C(0, 0);
+		for (var x=xMin; x<0; x+= major) {
+			var pt2 = kApp.ptR2C(-x, 0);
+			var pt3 = kApp.ptR2C(x, 0);
+			var w = Math.abs(pt2.x-pt3.x);
+			var h = Math.abs(pt2.x-pt3.x);
+			ellipse(pt1.x, pt1.y, w, h);
+		}
 		
 		// ordinal gridlines
 		stroke(220, 220, 220);
@@ -133,9 +148,6 @@ kApp.render = {
 
 function setup() {
 	kApp.init();
-	var c = createCanvas(kApp.size.cWidth, kApp.size.cHeight);
-	c.parent('k-canvas');
-    kApp.sizeCanvas();
 }
 
 function draw() {
@@ -145,5 +157,7 @@ function draw() {
 	kApp.render.fps();
 }
 
+//$(window).on('scroll resize', getVisible);
 function windowResized() {
+	//kApp.sizeCanvas();
 }
