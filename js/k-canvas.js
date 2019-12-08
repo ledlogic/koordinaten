@@ -1,5 +1,6 @@
 kApp.canvas = {
-	$el: null,
+	$elCanvas: null,
+	$elControl: null,
 	
 	init: function() {
 		kApp.canvas.sizeCanvas();
@@ -16,31 +17,31 @@ kApp.canvas = {
 		var fh = $f.height();
 		var w = ww - 300 - 40;
 		var h = wh - hh - hms * 2 - fh - fms * 2;
-		//kApp.log([wh,hms,hh,fh,h]);		
+		
+		// canvas
 		var $elCanvas = $('#k-canvas');
 		$elCanvas.width(w);
 		$elCanvas.height(h);
-		kApp.canvas.$el = $elCanvas;
+		kApp.canvas.$elCanvas = $elCanvas;
 
+		// control
 		var $elControl = $('#k-console');
 		$elControl.width(300 - 20);
 		$elControl.height(h);
 		$elControl.css("left", ww - 300 - 20);
+		kApp.canvas.$elControl = $elControl; 
 		
-  	    var w = Math.floor($("#k-canvas").width());
-		var h = Math.floor($("#k-canvas").height());
-		//kApp.log([w,h]);
-		var rect = new kApp.geom.rect(-w/2, w/2, -h/2, h/2);
-		var size = new kApp.geom.csize(w, h, rect);
-		//kApp.log(size);
-		var initialSize = kApp.geom.initialSize;
-		kApp.geom.initialSize = size;
-		kApp.geom.size = kApp.geom.initialSize;
-		if (!kApp.bg.initialized) {
-			kApp.bg.init(kApp.geom.initialSize);
-		}
+		kApp.geom.map.rrect = new kApp.geom.rrect(-500, -500, 500, 500);
+		kApp.geom.map.crect = new kApp.geom.crect(0, 0, w, h);
+		
+		kApp.log(["kApp.geom.map.rrect",kApp.geom.map.rrect]);
+		kApp.log(["kApp.geom.map.crect",kApp.geom.map.crect]);
+		
+		kApp.bg.init(kApp.geom.initialSize);
 
-		var c = createCanvas(kApp.geom.size.cWidth, kApp.geom.size.cHeight);
+		var crect = kApp.geom.map.crect;
+		
+		var c = createCanvas(crect.width, crect.height);
 		c.parent('k-canvas');
 	}
 };

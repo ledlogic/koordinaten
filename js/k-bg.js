@@ -3,16 +3,16 @@ kApp.bg = {
 	initialized: 0,
 	stars: [],
 	init: function(size) {
-		kApp.bg.starsArr(1000, size);
+		kApp.bg.starsArr(1000);
 		this.initialized = true;
 	},
-	star: function(size) {
-		this.pt = kApp.random.ptInRect(size.rect);
+	star: function() {
+		this.pt = kApp.random.rptInRrect();
 		this.intensity = Math.random();
 	},
-	starsArr: function(count, size) {
+	starsArr: function(count) {
 		for (var i=0; i<count; i++) {
-			kApp.bg.stars[kApp.bg.stars.length] = new kApp.bg.star(size);
+			kApp.bg.stars[kApp.bg.stars.length] = new kApp.bg.star();
 		}
 		kApp.bg.count = kApp.bg.stars.length;
 	}

@@ -5,57 +5,60 @@ kApp.render = {
 		stroke(0);
 		textSize(14);
 		textFont('Microgramma Extd D');
-		text("FPS: " + fps.toFixed(0), 10, height - 10);
+		
+		var y = kApp.geom.map.crect.height - 10;
+		//console.log([fps.toFixed(0),y]);
+		text("FPS: " + fps.toFixed(0), 10, y);
 	},
 	grid: function() {
 		var major = 100;
 		var minor = 20;
 		
-		var xMin = kApp.geom.size.rect.xMin;
+		var xMin = kApp.geom.map.rrect.xMin;
 		xMin = Math.floor(xMin / major - 1) * major;		
-		var xMax = kApp.geom.size.rect.xMax;
+		var xMax = kApp.geom.map.rrect.xMax;
 		xMax = Math.ceil(xMax / major + 1) * major;
 		
-		var yMin = kApp.geom.size.rect.yMin;
+		var yMin = kApp.geom.map.rrect.yMin;
 		yMin = Math.floor(yMin / major - 1) * major;
-		var yMax = kApp.geom.size.rect.yMax;
+		var yMax = kApp.geom.map.rrect.yMax;
 		yMax = Math.ceil(yMax / major + 1) * major;
 
 		// minor gridlines
 		stroke(50, 50, 150);
 		for (var x=xMin; x<=xMax; x+= minor) {
-			var pt1 = kApp.geom.ptR2C(x, yMin);
-			var pt2 = kApp.geom.ptR2C(x, yMax);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.size.cWidth,pt2.x), Math.min(kApp.geom.size.cHeight,pt2.y));
+			var pt1 = kApp.geom.rpt2Cpt(x, yMin);
+			var pt2 = kApp.geom.rpt2Cpt(x, yMax);
+			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
 		}
 		
 		for (var y=yMin; y<=yMax; y+= minor) {
-			var pt1 = kApp.geom.ptR2C(xMin, y);
-			var pt2 = kApp.geom.ptR2C(xMax, y);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.size.cWidth,pt2.x), Math.min(kApp.geom.size.cHeight,pt2.y));
+			var pt1 = kApp.geom.rpt2Cpt(xMin, y);
+			var pt2 = kApp.geom.rpt2Cpt(xMax, y);
+			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
 		}
 		
 		// major gridlines
 		stroke(80, 80, 200);
 
 		for (var x=xMin; x<=xMax; x+= major) {
-			var pt1 = kApp.geom.ptR2C(x, yMin);
-			var pt2 = kApp.geom.ptR2C(x, yMax);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.size.cWidth,pt2.x), Math.min(kApp.geom.size.cHeight,pt2.y));
+			var pt1 = kApp.geom.rpt2Cpt(x, yMin);
+			var pt2 = kApp.geom.rpt2Cpt(x, yMax);
+			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
 		}
 				
 		for (var y=yMin; y<=yMax; y+= major) {
-			var pt1 = kApp.geom.ptR2C(xMin, y);
-			var pt2 = kApp.geom.ptR2C(xMax, y);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.size.cWidth,pt2.x), Math.min(kApp.geom.size.cHeight,pt2.y));
+			var pt1 = kApp.geom.rpt2Cpt(xMin, y);
+			var pt2 = kApp.geom.rpt2Cpt(xMax, y);
+			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
 		}
 		
 		// major ellipses
 		noFill();
-		var pt1 = kApp.geom.ptR2C(0, 0);
+		var pt1 = kApp.geom.rpt2Cpt(0, 0);
 		for (var x=xMin; x<0; x+= major) {
-			var pt2 = kApp.geom.ptR2C(-x, 0);
-			var pt3 = kApp.geom.ptR2C(x, 0);
+			var pt2 = kApp.geom.rpt2Cpt(-x, 0);
+			var pt3 = kApp.geom.rpt2Cpt(x, 0);
 			var w = Math.abs(pt2.x-pt3.x);
 			var h = Math.abs(pt2.x-pt3.x);
 			ellipse(pt1.x, pt1.y, w, h);
@@ -65,25 +68,29 @@ kApp.render = {
 		stroke(220, 220, 220);
 
 		{
-			var pt1 = kApp.geom.ptR2C(0, yMin);
-			var pt2 = kApp.geom.ptR2C(0, yMax);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.size.cWidth,pt2.x), Math.min(kApp.geom.size.cHeight,pt2.y));
+			var pt1 = kApp.geom.rpt2Cpt(0, yMin);
+			var pt2 = kApp.geom.rpt2Cpt(0, yMax);
+			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
 		}
 		
 		for (var y=yMin; y<=yMax; y+= major) {
-			var pt1 = kApp.geom.ptR2C(xMin, 0);
-			var pt2 = kApp.geom.ptR2C(xMax, 0);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.size.cWidth,pt2.x), Math.min(kApp.geom.size.cHeight,pt2.y));
+			var pt1 = kApp.geom.rpt2Cpt(xMin, 0);
+			var pt2 = kApp.geom.rpt2Cpt(xMax, 0);
+			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
 		}
 	},
 	ship: function(s) {
+		
 		var st = Math.round(127 + s.intensity*128);
 		//console.log(st);
 		stroke(st);
-		var pt = kApp.geom.ptR2C(s.pt.x, s.pt.y);
+		var pt = kApp.geom.rpt2Cpt(s.pt.x, s.pt.y);
 		
+		noFill();
 		stroke("green");
-		var cRadius = kApp.geom.dimR2C(s.radius);
+		var cRadius = kApp.geom.dimR2C(s.radius * 1.2);
+		//kApp.log(["s.radius", s.radius]);
+		//kApp.log(["cRadius", cRadius]);
 		circle(pt.x, pt.y, cRadius);
 		
 		// rotate
@@ -113,12 +120,21 @@ kApp.render = {
 
 		s.cpt = [];
 		for (var i=0; i+1<s.coord.length; i+=2) {
-			var pt = kApp.geom.ptR2C(s.rcoord[i], s.rcoord[i+1]);
+			var pt = kApp.geom.rpt2Cpt(s.rcoord[i], s.rcoord[i+1]);
 			s.cpt[i] = pt.x;
 			s.cpt[i+1] = pt.y;
 		}
+		
+		//if (typeof window.ship1 === "undefined") {
+		//	kApp.log(["s.radius",s.radius]);
+		//	kApp.log(["s.coord",s.coord]);
+		//	kApp.log(["s.rcoord",s.rcoord]);
+		//	kApp.log(["s.cpt",s.cpt]);
+		//	window.ship1 = 1;
+		//}
 
 		stroke(153);
+		fill("red");
 		triangle(s.cpt[0], s.cpt[1], s.cpt[2], s.cpt[3], s.cpt[4], s.cpt[5]);
 	},
 	ships: function() {
@@ -132,7 +148,7 @@ kApp.render = {
 		var st = Math.round(s.intensity*255);
 		//console.log(st);
 		stroke(st);
-		var pt = kApp.geom.ptR2C(s.pt.x, s.pt.y);
+		var pt = kApp.geom.rpt2Cpt(s.pt.x, s.pt.y);
 		point(pt.x, pt.y);
 	},
 	stars: function() {
@@ -140,5 +156,57 @@ kApp.render = {
 			var s = kApp.bg.stars[i];
 			kApp.render.star(s);
 		}
+	},
+	test: function() {
+		fill(0);
+
+		var rcoord = [100,0, 70.7,70.7, 0,100];
+		var cpt = [];
+		for (var i=0; i+1<rcoord.length; i+=2) {
+			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			cpt[i] = pt.x;
+			cpt[i+1] = pt.y;
+		}
+		
+		//if (typeof window.test1 === "undefined") {
+		//	kApp.log(cpt);
+		//	window.test1 = 1;
+		//}
+
+		stroke(200);
+		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
+		
+		var rcoord = [0,100, -70.7,70.7, -100,0];
+		var cpt = [];
+		for (var i=0; i+1<rcoord.length; i+=2) {
+			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			cpt[i] = pt.x;
+			cpt[i+1] = pt.y;
+		}
+
+		stroke(150);
+		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
+
+		var rcoord = [-100,0, -70.7,-70.7, 0,-100];
+		var cpt = [];
+		for (var i=0; i+1<rcoord.length; i+=2) {
+			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			cpt[i] = pt.x;
+			cpt[i+1] = pt.y;
+		}
+
+		stroke(100);
+		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
+
+		var rcoord = [0,-100, 70.7,-70.7, 100,0];
+		var cpt = [];
+		for (var i=0; i+1<rcoord.length; i+=2) {
+			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			cpt[i] = pt.x;
+			cpt[i+1] = pt.y;
+		}
+
+		stroke(50);
+		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
 	}
 };

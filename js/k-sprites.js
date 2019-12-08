@@ -1,22 +1,23 @@
 kApp.sprites = {
 	initialized: 0,
 	ships: [],
-	init: function(size) {
-		kApp.sprites.shipsArr(1, size);
+	init: function() {
+		kApp.sprites.shipsArr(10);
 		this.initialized = true;
 	},
-	ship: function(size, radius) {
-		this.pt = kApp.random.ptInRect(size.rect);
+	ship: function(radius) {
+		this.pt = kApp.random.rptInRrect();
 		this.intensity = Math.random();
 		this.radius = radius;
 		this.theta = Math.random() * Math.PI * 2.0;
-		this.absv = (Math.random() * 10 -5);
+		this.absv = ((Math.random() * 0.5) + 0.5);
 		this.v = {x:this.absv * Math.cos(this.theta), y:this.absv * Math.sin(this.theta)};
-		kApp.log(this.theta);
-		kApp.log(this.v);
-		//if (this.theta > Math.PI && this.theta < Math.PI * 1.5) {
-		//	this.v.y = -this.v.y;
-		//	kApp.log(this.v);
+		
+		//if (typeof window.test2 === "undefined") {
+		//	kApp.log(["this.absv",this.absv]);
+		//	kApp.log(["this.theta",this.theta]);
+		//	kApp.log(["this.v",this.v]);
+		//	window.test2 = 1;
 		//}
 		this.a = {x:0.0, y:0.0};
 		this.thetav = 0.0;
@@ -25,12 +26,11 @@ kApp.sprites = {
 		this.radius = (0.5 * Math.random() + 0.5) * radius;
 		
 	},
-	shipsArr: function(count, size) {
+	shipsArr: function(count) {
 		for (var i=0; i<count; i++) {
 			var radius = 10;
-			kApp.sprites.ships[kApp.sprites.ships.length] = new kApp.sprites.ship(size, radius);
+			kApp.sprites.ships[kApp.sprites.ships.length] = new kApp.sprites.ship(radius);
 		}
-		//console.log(kApp.sprites.ships.length);
 	},
 	update: function() {
 		for (var i=0;i<kApp.sprites.ships.length;i++) {
