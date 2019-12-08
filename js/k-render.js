@@ -80,27 +80,20 @@ kApp.render = {
 		}
 	},
 	ship: function(s) {
-		
 		var st = Math.round(127 + s.intensity*128);
-		//console.log(st);
 		stroke(st);
 		var pt = kApp.geom.rpt2Cpt(s.pt.x, s.pt.y);
 		
 		noFill();
 		stroke("green");
 		var cRadius = kApp.geom.dimR2C(s.radius * 1.2);
-		//kApp.log(["s.radius", s.radius]);
-		//kApp.log(["cRadius", cRadius]);
 		circle(pt.x, pt.y, cRadius);
 		
 		// rotate
 		s.rcoord = [];
 		var theta = s.theta;
-		//kApp.log(theta);
 		var sin = Math.sin(theta);
 		var cos = Math.cos(theta);
-		//kApp.log(sin);
-		//kApp.log(cos);
 		for (var i=0; i+1<s.coord.length; i+=2) {
 			s.rcoord[i] = s.coord[i] * cos - s.coord[i+1] * sin;
 			s.rcoord[i+1] = s.coord[i] * sin + s.coord[i+1] * cos;
@@ -125,20 +118,11 @@ kApp.render = {
 			s.cpt[i+1] = pt.y;
 		}
 		
-		//if (typeof window.ship1 === "undefined") {
-		//	kApp.log(["s.radius",s.radius]);
-		//	kApp.log(["s.coord",s.coord]);
-		//	kApp.log(["s.rcoord",s.rcoord]);
-		//	kApp.log(["s.cpt",s.cpt]);
-		//	window.ship1 = 1;
-		//}
-
 		stroke(153);
 		fill("red");
 		triangle(s.cpt[0], s.cpt[1], s.cpt[2], s.cpt[3], s.cpt[4], s.cpt[5]);
 	},
 	ships: function() {
-		//console.log(kApp.sprites.ships.length);
 		for (var i=0;i<kApp.sprites.ships.length;i++) {
 			var s = kApp.sprites.ships[i];
 			kApp.render.ship(s);
@@ -146,15 +130,35 @@ kApp.render = {
 	},
 	star: function(s) {
 		var st = Math.round(s.intensity*255);
-		//console.log(st);
 		stroke(st);
-		var pt = kApp.geom.rpt2Cpt(s.pt.x, s.pt.y);
+		var pt = kApp.geom.rpt2Cpt(s.rpt.x, s.rpt.y);
 		point(pt.x, pt.y);
 	},
 	stars: function() {
 		for (var i=0;i<kApp.bg.stars.length;i++) {
 			var s = kApp.bg.stars[i];
 			kApp.render.star(s);
+		}
+	},
+	system: function(s) {
+		noFill();
+		stroke(255);
+		
+		var cpt = kApp.geom.rpt2Cpt(s.rpt.x, s.rpt.y);
+		var cRadius = kApp.geom.dimR2C(s.radius + 2.0);
+		circle(cpt.x, cpt.y, cRadius);
+		
+		fill(s.color);
+		var cRadius = kApp.geom.dimR2C(s.radius * 1.0);
+		circle(cpt.x, cpt.y, cRadius);
+		kApp.log(s.rpt);
+		kApp.log(cpt);
+		kApp.log(cRadius);
+	},
+	systems: function() {
+		for (var i=0; i<kApp.game.systems.length; i++) {
+			var s = kApp.game.systems[i];
+			kApp.render.system(s);
 		}
 	},
 	test: function() {
@@ -168,11 +172,6 @@ kApp.render = {
 			cpt[i+1] = pt.y;
 		}
 		
-		//if (typeof window.test1 === "undefined") {
-		//	kApp.log(cpt);
-		//	window.test1 = 1;
-		//}
-
 		stroke(200);
 		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
 		

@@ -44,7 +44,7 @@ kApp.geom = {
 		var ret = new kApp.geom.cpt(
 			Math.round((rx - rrect.xcenter)/rrect.width*crect.width) + crect.xcenter,
 			-Math.round((ry - rrect.ycenter)/rrect.height*crect.height) + crect.ycenter
-		);		
+		);
 		return ret;
 	},
 	
@@ -52,6 +52,9 @@ kApp.geom = {
 		var rrect = kApp.geom.map.rrect;
 		var crect = kApp.geom.map.crect;
 		var ret = Math.round(dim/rrect.width*crect.width);
+		//kApp.log(rrect);
+		//kApp.log(crect);
+		//kApp.log(ret);
 		return ret;
 	}
 };

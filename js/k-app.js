@@ -1,6 +1,7 @@
 var kApp = {
 	init: function() {
 		kApp.canvas.init();
+		kApp.game.init();
 		kApp.sprites.init();
 	},
 	log: function(s) {

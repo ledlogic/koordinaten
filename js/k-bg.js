@@ -6,8 +6,10 @@ kApp.bg = {
 		kApp.bg.starsArr(1000);
 		this.initialized = true;
 	},
+
+	// star constructor
 	star: function() {
-		this.pt = kApp.random.rptInRrect();
+		this.rpt = kApp.random.rptInRrect();
 		this.intensity = Math.random();
 	},
 	starsArr: function(count) {
