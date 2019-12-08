@@ -144,19 +144,6 @@ kApp.render = {
 	}
 };
 
-//
-
-function setup() {
-	kApp.init();
-}
-
-function draw() {
-	background(30,30,30);
-	kApp.render.stars();
-	kApp.render.grid();
-	kApp.render.fps();
-}
-
 //$(window).on('scroll resize', getVisible);
 function windowResized() {
 	//kApp.sizeCanvas();
