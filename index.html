@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>koordinaten</title>
-<link rel="stylesheet" href="css/k.css" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>koordinaten</title>
+	<link rel="stylesheet" href="css/k.css" />
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<header>Koordinaten</header>
-	<section id="k-canvas" class="k-canvas"></section>
-	<footer>
+	<header class="clearfix">Koordinaten</header>
+	<div class="k-main clearfix">
+		<section id="k-canvas" class="k-canvas"></section>
+		<section id="k-console" class="k-console">
+			<h4>Console</h4>
+		</section>
+	</div>
+	<footer class="clearfix">
 		Koordinaten - <a href="https://github.com/ledlogic/koordinaten">https://github.com/ledlogic/koordinaten</a>
 	</footer>
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/p5.min.js"></script>
 	<script src="js/k-app.js"></script>
+	<script src="js/k-canvas.js"></script>
 	<script src="js/k-bg.js"></script>
 	<script src="js/k-geom.js"></script>
 	<script src="js/k-p5.js"></script>
+	<script src="js/k-random.js"></script>
+	<script src="js/k-render.js"></script>
+	<script src="js/k-ships.js"></script>
 </body>
 </html>
