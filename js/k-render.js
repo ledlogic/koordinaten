@@ -77,11 +77,49 @@ kApp.render = {
 		}
 	},
 	ship: function(s) {
-		var st = Math.round(s.intensity*255);
+		var st = Math.round(127 + s.intensity*128);
 		//console.log(st);
 		stroke(st);
 		var pt = kApp.geom.ptR2C(s.pt.x, s.pt.y);
-		circle(pt.x, pt.y, s.radius);
+		
+		stroke("green");
+		var cRadius = kApp.geom.dimR2C(s.radius);
+		circle(pt.x, pt.y, cRadius);
+		
+		// rotate
+		s.rcoord = [];
+		var theta = s.theta;
+		//kApp.log(theta);
+		var sin = Math.sin(theta);
+		var cos = Math.cos(theta);
+		//kApp.log(sin);
+		//kApp.log(cos);
+		for (var i=0; i+1<s.coord.length; i+=2) {
+			s.rcoord[i] = s.coord[i] * cos - s.coord[i+1] * sin;
+			s.rcoord[i+1] = s.coord[i] * sin + s.coord[i+1] * cos;
+		}
+
+		// scale
+		for (var i=0; i+1<s.coord.length; i+=2) {
+			 s.rcoord[i] = s.rcoord[i] * s.radius / 10.0;
+			 s.rcoord[i+1] = s.rcoord[i+1] * s.radius / 10.0;
+		}
+		
+		// translate
+		for (var i=0; i+1<s.coord.length; i+=2) {
+			s.rcoord[i] = s.rcoord[i] + s.pt.x;
+			s.rcoord[i+1] = s.rcoord[i+1] + s.pt.y;
+		}
+
+		s.cpt = [];
+		for (var i=0; i+1<s.coord.length; i+=2) {
+			var pt = kApp.geom.ptR2C(s.rcoord[i], s.rcoord[i+1]);
+			s.cpt[i] = pt.x;
+			s.cpt[i+1] = pt.y;
+		}
+
+		stroke(153);
+		triangle(s.cpt[0], s.cpt[1], s.cpt[2], s.cpt[3], s.cpt[4], s.cpt[5]);
 	},
 	ships: function() {
 		//console.log(kApp.sprites.ships.length);

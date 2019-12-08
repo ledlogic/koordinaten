@@ -8,4 +8,6 @@ function draw() {
 	kApp.render.grid();
 	kApp.render.ships();
 	kApp.render.fps();
+	
+	kApp.sprites.update();
 }
