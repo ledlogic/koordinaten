@@ -29,9 +29,9 @@ kApp.canvas = {
 		$elControl.width(300 - 20);
 		$elControl.height(h);
 		$elControl.css("left", ww - 300 - 20);
-		kApp.canvas.$elControl = $elControl; 
-		kApp.geom.map.rrect = new kApp.geom.rrect(-500, -500, 500, 500);
+		kApp.canvas.$elControl = $elControl;
 		kApp.geom.map.crect = new kApp.geom.crect(0, 0, w, h);
+		kApp.geom.map.rrect = new kApp.geom.rrect(-kApp.geom.map.crect.xcenter, -kApp.geom.map.crect.ycenter, kApp.geom.map.crect.xcenter, kApp.geom.map.crect.ycenter);
 		kApp.bg.init(kApp.geom.initialSize);
 		
 		// create canvas

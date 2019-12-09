@@ -144,16 +144,29 @@ kApp.render = {
 		noFill();
 		stroke(255);
 		
+		if (s.color === "blue") {
+			fill(100, 110, 200);
+		} else {
+			fill(200, 110, 100);
+		}
+		
 		var cpt = kApp.geom.rpt2Cpt(s.rpt.x, s.rpt.y);
-		var cRadius = kApp.geom.dimR2C(s.radius + 2.0);
+		var cRadius = kApp.geom.dimR2C(s.radius * 1.0 + 2.0);
 		circle(cpt.x, cpt.y, cRadius);
 		
-		fill(s.color);
+		stroke(0);
 		var cRadius = kApp.geom.dimR2C(s.radius * 1.0);
 		circle(cpt.x, cpt.y, cRadius);
-		kApp.log(s.rpt);
-		kApp.log(cpt);
-		kApp.log(cRadius);
+		
+		if (s.color === "blue") {
+			fill(100, 110, 200);
+		} else {
+			fill(200, 110, 100);
+		}
+		
+		noStroke();
+		textFont("Calibri");
+		text(s.name, cpt.x+15, cpt.y+4);
 	},
 	systems: function() {
 		for (var i=0; i<kApp.game.systems.length; i++) {
