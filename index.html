@@ -13,18 +13,21 @@
 	<div class="k-main clearfix">
 		<section id="k-canvas" class="k-canvas"></section>
 		<section id="k-console" class="k-console">
-			<h4>Console</h4>
+			<label for="cmd">Command</label><br/>
+			<button id="build">BUILD</button>
+			<button id="move">MOVE</button>
+			<button id="info">INFO</button>
+			<input type="text" id="cmd" />
+			<button id="enter">ENTER</button>
 			
-			<button>BUILD</button>
-			<button>MOVE</button>
-			<button>INFO</button>
-			
-			<label for="cmd">Command</label>
-			<input type="text" id="cmd" /><button>ENTER</button>
+			<pre id="log">
+			</pre>
 		</section>
 	</div>
 	<footer class="clearfix">
+		<div class="footer-content">
 		Koordinaten - <a href="https://github.com/ledlogic/koordinaten">https://github.com/ledlogic/koordinaten</a>
+		</div>
 	</footer>
 	<script src="js-lib/jquery-3.3.1.min.js"></script>
 	<script src="js-lib/p5.min.js"></script>

@@ -64,15 +64,20 @@ section.k-console button {
 }
 
 footer {
+	bottom: 0; 
+    left: 0;
+    position: absolute;
+	margin: 20px 0 20px 0;
+	width: 100%;
+}
+
+.footer-content {
 	background: #1c1c1c;
 	border: 1px solid #ccc;
-    bottom: 0; 
 	color: #ccc;
 	font-size: 0.8em;
-    left: 0;
+    margin: 0 20px 0 20px;
 	padding: 4px;
-    position: absolute;
-	margin: 20px;
 }
 
 .k-main {
@@ -110,4 +115,10 @@ footer {
 @-o-keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
+}
+
+#log {
+	border 1px solid white;
+	height: 200px;
+	overflow-y: auto;
 }

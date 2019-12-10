@@ -5,5 +5,14 @@ kApp.events = {
 	cmdEnter: function() {
 		var val = kApp.controls.cmdVal();
 	   	console.log(val);
+	},
+	build: function() {
+		
+	},
+	move: function() {
+		
+	},
+	info: function() {
+		
 	}
 }
