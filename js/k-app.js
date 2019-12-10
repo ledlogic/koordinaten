@@ -3,6 +3,8 @@ var kApp = {
 		kApp.canvas.init();
 		kApp.game.init();
 		kApp.sprites.init();
+		kApp.controls.init();
+		kApp.events.init();
 	},
 	log: function(s) {
 		console.log(s);

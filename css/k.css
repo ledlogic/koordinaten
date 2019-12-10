@@ -51,6 +51,18 @@ section.k-console {
 	width: 260px;
 }
 
+section.k-console label {
+	margin: 4px;
+}
+
+section.k-console input {
+	margin: 4px;
+}
+
+section.k-console button {
+	margin: 4px;
+}
+
 footer {
 	background: #1c1c1c;
 	border: 1px solid #ccc;
