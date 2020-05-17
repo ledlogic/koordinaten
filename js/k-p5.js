@@ -11,11 +11,9 @@ function draw() {
 	kApp.render.ships();
 	//kApp.render.test();
 	//kApp.render.grid();
-
 	kApp.render.fps();
 	kApp.sprites.update();
-	
-	// mouse pressed
+	kApp.game.update();
 }
 
 function checkBoundaries() {

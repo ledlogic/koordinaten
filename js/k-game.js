@@ -1,14 +1,19 @@
 kApp.game = {
+	settings: {
+		turn: 0,
+		turnRatePerMs: 0.000025,
+		lastCheckMs: 0 
+	},
 	players: [
 	    {
-	    	name: "Human",
-	    	type: "HUMAN",
+	    	name: "Computer",
+	    	type: "COMPUTER",
 	        color: "blue",
 	        credits: 0
 	    },
 	    {
-	    	name: "Computer",
-	    	type: "COMPUTER",
+	    	name: "Human",
+	    	type: "HUMAN",
 	        color: "red",
 	        credits: 0 
 	    }
@@ -69,56 +74,64 @@ kApp.game = {
 			rPt: new kApp.geom.rPt(-370, 0),
 			radius: 5,
 			color: "blue",
-			ships: [2, 1, 2, 0, 1, 16, 9]
+			ships: [2, 1, 2, 0, 1, 16],
+			credits: 9
 		},
 	    {
 		    "name": "Omega",
 			rPt: new kApp.geom.rPt(-182.5, 110),
 			radius: 5,
 			color: "blue",
-			ships: [4, 0, 1, 0, 1, 14, 7]
+			ships: [4, 0, 1, 0, 1, 14],
+			credits: 7
 		},
 		{
 		    "name": "Beta",
 		    rPt: new kApp.geom.rPt(-182.5, -110),
 			radius: 5,
 			color: "blue",
-			ships: [3, 2, 2, 0, 1, 12, 6]
+			ships: [3, 2, 2, 0, 1, 12],
+			credits: 6
 		},
 		{
 		    "name": "Ares",
 		    rPt: new kApp.geom.rPt(130, 177.5),
 			radius: 5,
 			color: "red",
-			ships: [3, 1, 1, 1, 0, 8, 5]
+			ships: [3, 1, 1, 1, 0, 8],
+			credits: 5
 		},
 		{
 		    "name": "Pacifica",
 		    rPt: new kApp.geom.rPt(385, 252.5),
 			radius: 5,
 			color: "red",
-			ships: [1, 0, 2, 1, 0, 6, 4]
+			ships: [1, 0, 2, 1, 0, 6],
+			credits: 4
 		},
 		{
 		    "name": "Concordia",
 		    rPt: new kApp.geom.rPt(285, -5),
 			radius: 5,
 			color: "red",
-			ships: [2, 1, 1, 0, 1, 10, 6]
+			ships: [2, 1, 1, 0, 1, 10],
+			credits: 6
 		},
 		{
 		    "name": "Itlantia",
 		    rPt: new kApp.geom.rPt(290, -115),
 			radius: 5,
 			color: "red",
-			ships: [1, 0, 1, 0, 0, 8, 5]
+			ships: [1, 0, 1, 0, 0, 8],
+			credits: 5
 		},
 		{
 		    "name": "Herme",
 		    rPt: new kApp.geom.rPt(30, -190),
 			radius: 5,
 			color: "red",
-			ships: [2, 1, 1, 0, 0, 8, 5]
+			ships: [2, 1, 1, 0, 0, 8],
+			credits: 5
 		}
 	],
 	
@@ -143,6 +156,7 @@ kApp.game = {
 		var ret = _.find(kApp.game.players, function(player) {
 			return player.color == color;
 		});
+		return ret;
 	},
 	
 	getSelectedSystem: function() {
@@ -191,6 +205,37 @@ kApp.game = {
 	clearSelectedSystemDestinationCount: function() {
 		var selectedSystem = kApp.game.getSelectedSystem();
 		selectedSystem.destinationCount = 0;
-	}
+	},
 
+	update: function() {
+		var turn = kApp.game.settings.turn;
+		var newMs = kApp.date.getMs()
+		var lastCheckMs = kApp.game.settings.lastCheckMs;
+		var turnRatePerMs = kApp.game.settings.turnRatePerMs;
+		
+		if (newMs > lastCheckMs) {
+			kApp.game.settings.turn += (newMs - lastCheckMs) * turnRatePerMs;
+			kApp.game.settings.lastCheckMs = newMs;
+			kApp.data.showGame();
+			
+			if (Math.floor(kApp.game.settings.turn) - Math.floor(turn) >= 1) {
+				kApp.game.newTurn();
+			}
+		}
+	},
+	
+	newTurn: function() {
+		kApp.log("newTurn");
+		// increment credits
+		_.each(kApp.game.players, function(player) {
+			var color = player.color;
+			_.each(kApp.game.systems, function(system) {
+				if (system.color == color) {
+					player.credits += system.credits;
+				}
+			});
+		});
+		
+		kApp.data.showPlayers();
+	}
 };

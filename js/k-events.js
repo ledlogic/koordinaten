@@ -2,12 +2,38 @@ kApp.events = {
 	init: function() {
 		
 	},
-	cmdEnter: function() {
-		var val = kApp.controls.cmdVal();
-	   	console.log(val);
-	},
+	// user clicked the i-th ship build button for the current selected system
 	build: function() {
+		var $that = $(this);
+		var i = $that.data("ship-i");
+		if (i == null) {
+			return;
+		}
+		var system = kApp.game.getSelectedSystem();
+		if (system == null) {
+			return;
+		}
+		var ship = kApp.game.ships[i];
+		if (ship == null) {
+			return;
+		}
+		var bc = ship.bc;
+		if (bc == null) {
+			return;
+		}
+		var player = kApp.game.getPlayer("red");
+		if (player == null) {
+			return;
+		}
 		
+		player.credits -= ship.credits;
+		var building = system.building[i];
+		var buildingArr = building.split(",");
+		buildingArr[bc-1] = parseInt(buildingArr[bc-1], 10) + 1;
+		system.building[i] = buildingArr.join(",");
+		
+		kApp.data.showPlayers();
+		kApp.data.showSystem(system);
 	},
 	move: function() {
 		
@@ -41,6 +67,6 @@ kApp.events = {
 		}
 	},
 	moveStarted: function() {
-		alert("moveStarted");
+		kApp.log("moveStarted");
 	}
 }

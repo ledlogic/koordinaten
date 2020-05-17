@@ -123,28 +123,52 @@ footer {
 	overflow-y: auto;
 }
 
-.k-system, .k-ships {
+.k-game,
+.k-player,
+.k-system,
+.k-ships {
 	display: none;
 	font-size: 0.8em;
-	text-transform: uppercase;
 }
-.k-system label, .k-ships label {
-	font-size: 1.2em;
-	color: #fff;
-}
-#k-system-data-table, #k-ships-data-table {
+#k-game-data-table,
+#k-player-data-table,
+#k-system-data-table,
+#k-ships-data-table {
 	width: 100%;	
 }
+.k-game h4 {
+	color: #9b74a5;
+}
+#k-game-data-table {
+	color: #9b74a5;
+}
+.k-game th, .k-game td,
+.k-player th, .k-player td,
 .k-system th, .k-system td,
 .k-ships th, .k-ships td {
 	border:1px solid #333;
-}
-.k-system .k-system-owner {
-	text-transform: uppercase;
 }
 .k-ships .k-ships-name {
 	text-align: left;
 }
 .k-ship .k-ships-current {
 	
+}
+.k-color-blue {
+	color:rgb(100, 110, 200);
+}
+.k-color-red {
+	color:rgb(200, 110, 100);
+}
+.k-ship-building-delimiter {
+	color: rgb(100,100,100);
+	font-size: 0.4em;
+}
+.k-ships-building {
+	font-size: 0.8em;
+	text-align: left;
+}
+.k-ships-incr {
+	font-size: 0.8em;
+	padding: 0 2px;
 }

@@ -1,11 +1,15 @@
 var kApp = {
 	init: function() {
+		kApp.date.init();
 		kApp.canvas.init();
 		kApp.game.init();
 		kApp.sprites.init();
 		kApp.controls.init();
 		kApp.events.init();
 		kApp.render.init();
+		kApp.data.init();
+
+		kApp.game.newTurn();
 	},
 	log: function(s) {
 		console.log(s);
