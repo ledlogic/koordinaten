@@ -14,5 +14,15 @@ kApp.events = {
 	},
 	info: function() {
 		
+	},
+	selectSystem: function(s) {
+		if (!s || !s.selected) {
+			_.each(kApp.game.systems, function(system) {
+				system.selected = false;
+			});
+			if (s) {
+				s.selected = true;
+			}
+		}
 	}
 }

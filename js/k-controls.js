@@ -4,7 +4,8 @@ kApp.controls = {
 	init: function() {
 		var $cmd = $("#cmd");
 		$cmd.on('keypress',function(e) {
-		    if(e.which == 13) {
+			var code = e.keyCode || e.which
+		    if(code === 13) {
 		    	kApp.events.cmdEnter();
 		    }
 		});

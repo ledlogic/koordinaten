@@ -1,4 +1,15 @@
 kApp.render = {
+	settings: {
+		grid: {
+			major: false,
+			minor: false,
+			ellipses: false,
+			ordinals: true
+		},
+		system: {
+			coord: true
+		}
+	},
 	fps: function() {
 		var fps = frameRate();
 		fill(255);
@@ -25,64 +36,71 @@ kApp.render = {
 		yMax = Math.ceil(yMax / major + 1) * major;
 
 		// minor gridlines
-		stroke(50, 50, 150);
-		for (var x=xMin; x<=xMax; x+= minor) {
-			var pt1 = kApp.geom.rpt2Cpt(x, yMin);
-			var pt2 = kApp.geom.rpt2Cpt(x, yMax);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
-		}
-		
-		for (var y=yMin; y<=yMax; y+= minor) {
-			var pt1 = kApp.geom.rpt2Cpt(xMin, y);
-			var pt2 = kApp.geom.rpt2Cpt(xMax, y);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+		if (kApp.render.settings.grid.minor) {
+			stroke(50, 50, 150);
+			for (var x=xMin; x<=xMax; x+= minor) {
+				var pt1 = kApp.geom.rPt2Cpt(x, yMin);
+				var pt2 = kApp.geom.rPt2Cpt(x, yMax);
+				line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+			}
+			
+			for (var y=yMin; y<=yMax; y+= minor) {
+				var pt1 = kApp.geom.rPt2Cpt(xMin, y);
+				var pt2 = kApp.geom.rPt2Cpt(xMax, y);
+				line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+			}
 		}
 		
 		// major gridlines
-		stroke(80, 80, 200);
-
-		for (var x=xMin; x<=xMax; x+= major) {
-			var pt1 = kApp.geom.rpt2Cpt(x, yMin);
-			var pt2 = kApp.geom.rpt2Cpt(x, yMax);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
-		}
-				
-		for (var y=yMin; y<=yMax; y+= major) {
-			var pt1 = kApp.geom.rpt2Cpt(xMin, y);
-			var pt2 = kApp.geom.rpt2Cpt(xMax, y);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+		if (kApp.render.settings.grid.major) {
+			stroke(80, 80, 200);
+	
+			for (var x=xMin; x<=xMax; x+= major) {
+				var pt1 = kApp.geom.rPt2Cpt(x, yMin);
+				var pt2 = kApp.geom.rPt2Cpt(x, yMax);
+				line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+			}
+					
+			for (var y=yMin; y<=yMax; y+= major) {
+				var pt1 = kApp.geom.rPt2Cpt(xMin, y);
+				var pt2 = kApp.geom.rPt2Cpt(xMax, y);
+				line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+			}
 		}
 		
 		// major ellipses
-		noFill();
-		var pt1 = kApp.geom.rpt2Cpt(0, 0);
-		for (var x=xMin; x<0; x+= major) {
-			var pt2 = kApp.geom.rpt2Cpt(-x, 0);
-			var pt3 = kApp.geom.rpt2Cpt(x, 0);
-			var w = Math.abs(pt2.x-pt3.x);
-			var h = Math.abs(pt2.x-pt3.x);
-			ellipse(pt1.x, pt1.y, w, h);
+		if (kApp.render.settings.grid.ellipses) {
+			noFill();
+			var pt1 = kApp.geom.rPt2Cpt(0, 0);
+			for (var x=xMin; x<0; x+= major) {
+				var pt2 = kApp.geom.rPt2Cpt(-x, 0);
+				var pt3 = kApp.geom.rPt2Cpt(x, 0);
+				var w = Math.abs(pt2.x-pt3.x);
+				var h = Math.abs(pt2.x-pt3.x);
+				ellipse(pt1.x, pt1.y, w, h);
+			}
 		}
 		
 		// ordinal gridlines
-		stroke(220, 220, 220);
-
-		{
-			var pt1 = kApp.geom.rpt2Cpt(0, yMin);
-			var pt2 = kApp.geom.rpt2Cpt(0, yMax);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
-		}
-		
-		for (var y=yMin; y<=yMax; y+= major) {
-			var pt1 = kApp.geom.rpt2Cpt(xMin, 0);
-			var pt2 = kApp.geom.rpt2Cpt(xMax, 0);
-			line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+		if (kApp.render.settings.grid.ordinals) {
+			stroke(220, 220, 220);
+			{
+				var pt1 = kApp.geom.rPt2Cpt(0, yMin);
+				var pt2 = kApp.geom.rPt2Cpt(0, yMax);
+				line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+			}
+			
+			for (var y=yMin; y<=yMax; y+= major) {
+				var pt1 = kApp.geom.rPt2Cpt(xMin, 0);
+				var pt2 = kApp.geom.rPt2Cpt(xMax, 0);
+				line(Math.max(0,pt1.x), Math.max(0,pt1.y), Math.min(kApp.geom.map.crect.width,pt2.x), Math.min(kApp.geom.map.crect.height,pt2.y));
+			}
 		}
 	},
 	ship: function(s) {
 		var st = Math.round(127 + s.intensity*128);
 		stroke(st);
-		var pt = kApp.geom.rpt2Cpt(s.pt.x, s.pt.y);
+		var pt = kApp.geom.rPt2Cpt(s.pt.x, s.pt.y);
 		
 		noFill();
 		stroke("green");
@@ -113,7 +131,7 @@ kApp.render = {
 
 		s.cpt = [];
 		for (var i=0; i+1<s.coord.length; i+=2) {
-			var pt = kApp.geom.rpt2Cpt(s.rcoord[i], s.rcoord[i+1]);
+			var pt = kApp.geom.rPt2Cpt(s.rcoord[i], s.rcoord[i+1]);
 			s.cpt[i] = pt.x;
 			s.cpt[i+1] = pt.y;
 		}
@@ -131,7 +149,7 @@ kApp.render = {
 	star: function(s) {
 		var st = Math.round(s.intensity*255);
 		stroke(st);
-		var pt = kApp.geom.rpt2Cpt(s.rpt.x, s.rpt.y);
+		var pt = kApp.geom.rPt2Cpt(s.rPt.x, s.rPt.y);
 		point(pt.x, pt.y);
 	},
 	stars: function() {
@@ -140,33 +158,63 @@ kApp.render = {
 			kApp.render.star(s);
 		}
 	},
+	
+	systemFill: function(s) {
+		// interior
+		if (s.color === "blue") {
+			fill(100, 110, 200);
+		} else {
+			fill(200, 110, 100);
+		}
+	},
+	
+	systemStroke: function(s) {
+		// interior
+		if (s.color === "blue") {
+			stroke(100, 110, 200);
+		} else {
+			stroke(200, 110, 100);
+		}
+	},
+	
 	system: function(s) {
 		noFill();
 		stroke(255);
 		
-		if (s.color === "blue") {
-			fill(100, 110, 200);
-		} else {
-			fill(200, 110, 100);
+		var cpt = kApp.geom.rPt2Cpt(s.rPt.x, s.rPt.y);
+		
+		kApp.render.systemFill(s);
+		kApp.render.systemStroke(s);
+
+		// selected
+		if (s.selected) {
+			stroke(255);
+			fill(0);
+			var cRadius = kApp.geom.dimR2C(s.radius * 1.0 + 5.0);
+			circle(cpt.x, cpt.y, cRadius);
+
+			kApp.render.systemFill(s);
+			var cRadius = kApp.geom.dimR2C(s.radius * 1.0);
+			circle(cpt.x, cpt.y, cRadius);
 		}
-		
-		var cpt = kApp.geom.rpt2Cpt(s.rpt.x, s.rpt.y);
-		var cRadius = kApp.geom.dimR2C(s.radius * 1.0 + 2.0);
-		circle(cpt.x, cpt.y, cRadius);
-		
-		stroke(0);
+
+		noStroke();
 		var cRadius = kApp.geom.dimR2C(s.radius * 1.0);
 		circle(cpt.x, cpt.y, cRadius);
-		
-		if (s.color === "blue") {
-			fill(100, 110, 200);
-		} else {
-			fill(200, 110, 100);
-		}
-		
+
+		// name
 		noStroke();
+		if (s.selected) {
+			fill(255);
+		} else {
+			kApp.render.systemFill(s);
+		}
 		textFont("Calibri");
-		text(s.name, cpt.x+15, cpt.y+4);
+		var t = s.name;
+		if (kApp.render.settings.system.coord) {
+			t += " (" + s.rPt + ")"
+		}
+		text(t, cpt.x+15, cpt.y+4);
 	},
 	systems: function() {
 		for (var i=0; i<kApp.game.systems.length; i++) {
@@ -180,7 +228,7 @@ kApp.render = {
 		var rcoord = [100,0, 70.7,70.7, 0,100];
 		var cpt = [];
 		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
 			cpt[i] = pt.x;
 			cpt[i+1] = pt.y;
 		}
@@ -191,7 +239,7 @@ kApp.render = {
 		var rcoord = [0,100, -70.7,70.7, -100,0];
 		var cpt = [];
 		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
 			cpt[i] = pt.x;
 			cpt[i+1] = pt.y;
 		}
@@ -202,7 +250,7 @@ kApp.render = {
 		var rcoord = [-100,0, -70.7,-70.7, 0,-100];
 		var cpt = [];
 		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
 			cpt[i] = pt.x;
 			cpt[i+1] = pt.y;
 		}
@@ -213,7 +261,7 @@ kApp.render = {
 		var rcoord = [0,-100, 70.7,-70.7, 100,0];
 		var cpt = [];
 		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rpt2Cpt(rcoord[i], rcoord[i+1]);
+			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
 			cpt[i] = pt.x;
 			cpt[i+1] = pt.y;
 		}

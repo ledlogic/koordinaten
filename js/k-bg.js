@@ -9,7 +9,7 @@ kApp.bg = {
 
 	// star constructor
 	star: function() {
-		this.rpt = kApp.random.rptInRrect();
+		this.rPt = kApp.random.rPtInRrect();
 		this.intensity = Math.random();
 	},
 	starsArr: function(count) {
