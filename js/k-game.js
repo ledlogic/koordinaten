@@ -199,12 +199,18 @@ kApp.game = {
 	
 	selectedSystemHasDestinationCount: function() {
 		var selectedSystem = kApp.game.getSelectedSystem();
-		return selectedSystem.destinationCount;
+		if (selectedSystem != null) {
+			return selectedSystem.destinationCount;
+		} else {
+			return 0;
+		}
 	},
 	
 	clearSelectedSystemDestinationCount: function() {
 		var selectedSystem = kApp.game.getSelectedSystem();
-		selectedSystem.destinationCount = 0;
+		if (selectedSystem != null) {
+			selectedSystem.destinationCount = 0;
+		}
 	},
 
 	update: function() {

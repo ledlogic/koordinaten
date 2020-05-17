@@ -36,7 +36,32 @@ kApp.events = {
 		kApp.data.showSystem(system);
 	},
 	move: function() {
+		var $that = $(this);
+		var i = $that.data("ship-i");
+		if (i == null) {
+			return;
+		}
+		var selectedSystem = kApp.game.getSelectedSystem();
+		if (selectedSystem == null) {
+			return;
+		}
+		var ship = kApp.game.ships[i];
+		if (ship == null) {
+			return;
+		}
+		var currentFleet = kApp.game.currentFleet;
+		if (currentFleet == null) {
+			return;
+		}
+		var change = $that.data("move-change");
+		if (change == null) {
+			return;
+		}
+		currentFleet[i] += change;
+		currentFleet[i] = Math.max(currentFleet[i], 0);
+		currentFleet[i] = Math.min(currentFleet[i], selectedSystem.ships[i]);
 		
+		$(".k-data-move-ship-" + i).html(currentFleet[i]);
 	},
 	info: function() {
 		
@@ -63,6 +88,7 @@ kApp.events = {
 				kApp.game.clearDestinationSystems();
 			} else if (system != selectedSystem && !system.destination) {
 				kApp.game.setDestinationSystem(system);
+				kApp.data.showMove();
 			}
 		}
 	},

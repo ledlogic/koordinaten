@@ -185,5 +185,83 @@ kApp.data = {
 	hideSystem: function(s) {
 		$("#k-system").fadeOut();
 		$("#k-ships").fadeOut();
+		$("#k-move").fadeOut();
+	},
+	showMove: function() {
+		var selectedSystem = kApp.game.getSelectedSystem();
+		var	destinationSystem = kApp.game.getDestinationSystem();
+		
+		kApp.game.currentFleet = [];
+		
+		var h = [];
+		h.push("<table id=\"k-move-data-table\">");
+		h.push("<tr>");
+		h.push("<th>From</th><td class=\"k-move-from k-color-" + selectedSystem.color + "\">" + selectedSystem.name+ "</td>");
+		h.push("</tr>");
+		h.push("<tr>");
+		h.push("<th>To</th><td class=\"k-move-to k-color-" + destinationSystem.color + "\">" + destinationSystem.name + "</td>");
+		h.push("</tr>");
+		h.push("</table>");
+		
+		h.push("<table id=\"k-move-data-table\">");
+		
+		h.push("<tr>");
+		h.push("<th>");
+		h.push("Moving");
+		h.push("</th>");
+		h.push("<th>");
+		h.push("Type");
+		h.push("</th>");
+		h.push("<th>");
+		h.push("Att");
+		h.push("</th>");
+		h.push("<th>");
+		h.push("Def");
+		h.push("</th>");
+		h.push("</tr>");
+		
+		for (var i=0; i<kApp.game.ships.length - 1;i++) {
+			var name = kApp.game.ships[i].name;
+			var ships = selectedSystem.ships[i];
+			var ship = kApp.game.ships[i];
+			var moveable = ships > 0;
+			kApp.game.currentFleet[i] = 0;
+
+			if (moveable) {
+				h.push("<tr>");
+		
+				h.push("<td class=\"k-ships-moving\">");
+				var moving = kApp.game.currentFleet[i];
+				h.push("<button class=\"k-data-button k-ships-move-desc\" data-ship-i=\"" + i + "\" data-move-change=\"-1\">-</button>");
+				h.push("<span class=\"k-data-move-ship-" + i + "\" data-ship-i=\"" + i + "\">" + moving + "</span>");
+				h.push("<button class=\"k-data-button k-ships-move-incr\" data-ship-i=\"" + i + "\" data-move-change=\"1\">+</button>");
+				h.push("</td>");
+		
+				h.push("<td class=\"k-ships-name\">");
+				h.push(name);
+				h.push("</td>");
+				
+				h.push("<td class=\"k-ships-attack\">");
+				h.push(ship.av);
+				h.push("</td>");
+		
+				h.push("<td class=\"k-ships-defense\">");
+				h.push(ship.dv);
+				h.push("</td>");
+				
+				h.push("</tr>");
+			}
+		}
+		h.push("</table>");
+		
+		h.push("<button class=\"k-data-button\">Send fleet</button>");
+		
+		$("#k-move-data").html(h.join(""));
+		$("#k-move").fadeIn();
+		
+		$(".k-ships-move-decr, .k-ships-move-incr").on("click", kApp.events.move);
+	},
+	hideMove: function() {
+		$("#k-move").fadeOut();
 	}
 };
