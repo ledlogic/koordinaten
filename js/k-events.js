@@ -68,5 +68,11 @@ kApp.events = {
 	},
 	moveStarted: function() {
 		kApp.log("moveStarted");
+	},
+	changeTurnRate: function() {
+		var $that = $(this);
+		var change = parseFloat($that.data("rate-change"), 10);
+		kApp.game.settings.turnRatePerMs = kApp.game.settings.turnRatePerMs * change; 
+		kApp.data.updateGame();
 	}
 }

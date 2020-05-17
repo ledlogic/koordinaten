@@ -216,7 +216,7 @@ kApp.game = {
 		if (newMs > lastCheckMs) {
 			kApp.game.settings.turn += (newMs - lastCheckMs) * turnRatePerMs;
 			kApp.game.settings.lastCheckMs = newMs;
-			kApp.data.showGame();
+			kApp.data.updateGame();
 			
 			if (Math.floor(kApp.game.settings.turn) - Math.floor(turn) >= 1) {
 				kApp.game.newTurn();
@@ -228,6 +228,7 @@ kApp.game = {
 		kApp.log("newTurn");
 		
 		// increment credits
+		kApp.log("newTurn: increment credits");
 		_.each(kApp.game.players, function(player) {
 			var color = player.color;
 			_.each(kApp.game.systems, function(system) {
@@ -236,25 +237,21 @@ kApp.game = {
 				}
 			});
 		});
+		kApp.data.showPlayers();
 		
 		// build track
+		kApp.log("newTurn: build track");
 		_.each(kApp.game.systems, function(system) {
 			for (var i=0; i<kApp.game.ships.length - 1;i++) {
 				var building = system.building[i];
 				var buildingArr = building.split(",");
 				var shipIncr = parseInt(buildingArr[0], 10);
-				
-				kApp.log("shipIncr:" + shipIncr);
-				kApp.log("ships before:" + system.ships[i]);
 				system.ships[i] = system.ships[i] + shipIncr;
-				kApp.log("ships after:" + system.ships[i]);
-				
 				for (var j=0; j<buildingArr.length - 1; j++) {
 					buildingArr[j] = buildingArr[j+1];
 				}
 				buildingArr[length-1] = 0;
 				system.building[i] = buildingArr.join(",");
-				kApp.log(system.building[i]);
 			}
 			if (system.selected) {
 				kApp.data.showSystem(system);
@@ -262,9 +259,8 @@ kApp.game = {
 		});
 		
 		// artificial intelligence
+		kApp.log("newTurn: ai");
 		kApp.ai.build();
-		kApp.ai.attack();
-		
-		kApp.data.showPlayers();
+		kApp.ai.attack();		
 	}
 };

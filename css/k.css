@@ -168,7 +168,15 @@ footer {
 	font-size: 0.8em;
 	text-align: left;
 }
-.k-ships-incr {
+.k-data-button {
+	background: transparent;
+	border: 1px solid rgb(100,100,100);
+	color: rgb(100,100,100);
 	font-size: 0.8em;
 	padding: 0 2px;
+}
+
+.k-data-button:active, .k-data-button:hover {
+	border: 1px solid rgb(200,200,200);
+	color: rgb(200,200,200);
 }

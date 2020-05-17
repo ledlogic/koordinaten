@@ -36,7 +36,6 @@ kApp.render = {
 		textFont('Microgramma Extd D');
 		
 		var y = kApp.geom.map.crect.height - 10;
-		//console.log([fps.toFixed(0),y]);
 		text("FPS: " + fps.toFixed(0), 10, y);
 	},
 	grid: function() {
