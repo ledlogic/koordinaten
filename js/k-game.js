@@ -127,6 +127,7 @@ kApp.game = {
 		_.each(kApp.game.systems, function(system) {
 			system.destination = false;
 			system.selected = false;
+			system.destinationCount = 0;
 			system.building = [time, time, time, time, time, time, time];
 		});
 	},
@@ -161,6 +162,7 @@ kApp.game = {
 	clearSelectedSystems: function() {
 		_.each(kApp.game.systems, function(system) {
 			system.selected = false;
+			system.destinationCount = 0;
 		});
 	},
 
@@ -171,9 +173,24 @@ kApp.game = {
 	},
 	
 	setDestinationSystem: function(system) {
-		kApp.game.clearDestinationSystems();			
+		kApp.game.clearDestinationSystems();
+		
+		var selectedSystem = kApp.game.getSelectedSystem();
+		selectedSystem.destinationCount++;
+		kApp.log(selectedSystem.destinationCount);
+		
 		system.destination = true;
 		kApp.render.settings.moves.init();
+	},
+	
+	selectedSystemHasDestinationCount: function() {
+		var selectedSystem = kApp.game.getSelectedSystem();
+		return selectedSystem.destinationCount;
+	},
+	
+	clearSelectedSystemDestinationCount: function() {
+		var selectedSystem = kApp.game.getSelectedSystem();
+		selectedSystem.destinationCount = 0;
 	}
 
 };

@@ -30,10 +30,16 @@ function mouseClicked() {
 		
 		if (system && !system.destination) {
 			kApp.events.selectSystem(system);	
-		} else if (system.destination) {
+		} else if (system && system.destination) {
 			kApp.events.moveStarted();
-		} else if (system.selected) {
+		} else if (system && system.selected) {
 			// deselect?
+		} else if (!system) {
+			if (kApp.game.selectedSystemHasDestinationCount()) {
+				kApp.game.clearSelectedSystemDestinationCount();
+			} else {
+				kApp.events.selectSystem(system);
+			}
 		}
 	}
 }

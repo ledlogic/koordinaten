@@ -22,7 +22,7 @@ kApp.render = {
 			}
 		},
 		system: {
-			coord: true
+			coord: false
 		}
 	},
 	init: function() {
