@@ -6,8 +6,8 @@ kApp.game = {
 	},
 	players: [
 	    {
-	    	name: "Computer",
-	    	type: "COMPUTER",
+	    	name: "AI",
+	    	type: "AI",
 	        color: "blue",
 	        credits: 0
 	    },
@@ -226,6 +226,7 @@ kApp.game = {
 	
 	newTurn: function() {
 		kApp.log("newTurn");
+		
 		// increment credits
 		_.each(kApp.game.players, function(player) {
 			var color = player.color;
@@ -235,6 +236,34 @@ kApp.game = {
 				}
 			});
 		});
+		
+		// build track
+		_.each(kApp.game.systems, function(system) {
+			for (var i=0; i<kApp.game.ships.length - 1;i++) {
+				var building = system.building[i];
+				var buildingArr = building.split(",");
+				var shipIncr = parseInt(buildingArr[0], 10);
+				
+				kApp.log("shipIncr:" + shipIncr);
+				kApp.log("ships before:" + system.ships[i]);
+				system.ships[i] = system.ships[i] + shipIncr;
+				kApp.log("ships after:" + system.ships[i]);
+				
+				for (var j=0; j<buildingArr.length - 1; j++) {
+					buildingArr[j] = buildingArr[j+1];
+				}
+				buildingArr[length-1] = 0;
+				system.building[i] = buildingArr.join(",");
+				kApp.log(system.building[i]);
+			}
+			if (system.selected) {
+				kApp.data.showSystem(system);
+			}
+		});
+		
+		// artificial intelligence
+		kApp.ai.build();
+		kApp.ai.attack();
 		
 		kApp.data.showPlayers();
 	}

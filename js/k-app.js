@@ -8,6 +8,7 @@ var kApp = {
 		kApp.events.init();
 		kApp.render.init();
 		kApp.data.init();
+		kApp.ai.init();
 
 		kApp.game.newTurn();
 	},
