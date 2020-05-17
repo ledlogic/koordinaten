@@ -57,11 +57,45 @@ kApp.events = {
 		if (change == null) {
 			return;
 		}
-		currentFleet[i] += change;
-		currentFleet[i] = Math.max(currentFleet[i], 0);
-		currentFleet[i] = Math.min(currentFleet[i], selectedSystem.ships[i]);
+		currentFleet.ships[i] += change;
+		currentFleet.ships[i] = Math.max(currentFleet.ships[i], 0);
+		currentFleet.ships[i] = Math.min(currentFleet.ships[i], selectedSystem.ships[i]);
 		
-		$(".k-data-move-ship-" + i).html(currentFleet[i]);
+		$(".k-data-move-ship-" + i).html(currentFleet.ships[i]);
+	},
+	moveFleet: function() {
+		debugger;
+		var $that = $(this);
+		var selectedSystem = kApp.game.getSelectedSystem();
+		if (selectedSystem == null) {
+			return;
+		}
+		var destinationSystem = kApp.game.getDestinationSystem();
+		if (destinationSystem == null) {
+			return;
+		}
+		var currentFleet = kApp.game.currentFleet;
+		if (currentFleet == null) {
+			return;
+		}
+		
+		// remove ships from selected system
+		for (var i=0; i<kApp.game.ships.length - 1;i++) {
+			var qty = currentFleet.ships[i];
+			selectedSystem.ships[i] -= qty;
+		}
+		
+		// build up fleet		
+		kApp.game.currentFleet.selectedSystem = selectedSystem;
+		kApp.game.currentFleet.destinationSystem = destinationSystem;
+		kApp.game.currentFleet.rPt = selectedSystem.rPt;
+		kApp.game.fleets.push(kApp.game.currentFleet);
+		
+		// update
+		kApp.game.resetCurrentFleet();
+		kApp.game.clearDestinationSystems();
+		kApp.data.hideMove();
+		kApp.data.showSystem();
 	},
 	info: function() {
 		

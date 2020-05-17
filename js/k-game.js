@@ -134,7 +134,7 @@ kApp.game = {
 			credits: 5
 		}
 	],
-	
+	fleets: [],	
 	init: function() {
 		var time = "0,0,0,0";
 		_.each(kApp.game.systems, function(system) {
@@ -143,6 +143,20 @@ kApp.game = {
 			system.destinationCount = 0;
 			system.building = [time, time, time, time, time, time, time];
 		});
+		kApp.game.resetCurrentFleet();
+	},
+	resetCurrentFleet: function() {
+		kApp.game.currentFleet = {
+			color: null,
+			system: null,
+			destination: null,
+			ships: [],
+			rPt: null
+		};
+		_.each(kApp.game.ships, function(ship, i) {
+			kApp.game.currentFleet.ships[i] = 0;
+		});
+		kApp.log(kApp.game.currentFleet.ships);
 	},
 
 	ptInSystem: function(rPt) {

@@ -84,6 +84,10 @@ kApp.data = {
 	},
 	
 	showSystem: function(s) {
+		if (s == null) {
+			s = kApp.game.getSelectedSystem();
+		}
+		
 		var player = kApp.game.getPlayer(s.color);
 		var defense = s.ships[5];
 		var credits = s.credits;
@@ -189,9 +193,13 @@ kApp.data = {
 	},
 	showMove: function() {
 		var selectedSystem = kApp.game.getSelectedSystem();
+		if (selectedSystem == null) {
+			return;
+		}
 		var	destinationSystem = kApp.game.getDestinationSystem();
-		
-		kApp.game.currentFleet = [];
+		if (destinationSystem == null) {
+			return;
+		}
 		
 		var h = [];
 		h.push("<table id=\"k-move-data-table\">");
@@ -225,13 +233,13 @@ kApp.data = {
 			var ships = selectedSystem.ships[i];
 			var ship = kApp.game.ships[i];
 			var moveable = ships > 0;
-			kApp.game.currentFleet[i] = 0;
+			kApp.game.currentFleet.ships[i] = 0;
 
 			if (moveable) {
 				h.push("<tr>");
 		
 				h.push("<td class=\"k-ships-moving\">");
-				var moving = kApp.game.currentFleet[i];
+				var moving = kApp.game.currentFleet.ships[i];
 				h.push("<button class=\"k-data-button k-ships-move-desc\" data-ship-i=\"" + i + "\" data-move-change=\"-1\">-</button>");
 				h.push("<span class=\"k-data-move-ship-" + i + "\" data-ship-i=\"" + i + "\">" + moving + "</span>");
 				h.push("<button class=\"k-data-button k-ships-move-incr\" data-ship-i=\"" + i + "\" data-move-change=\"1\">+</button>");
@@ -254,12 +262,13 @@ kApp.data = {
 		}
 		h.push("</table>");
 		
-		h.push("<button class=\"k-data-button\">Send fleet</button>");
+		h.push("<button class=\"k-data-button k-ships-move-action\">Send fleet</button>");
 		
 		$("#k-move-data").html(h.join(""));
 		$("#k-move").fadeIn();
 		
 		$(".k-ships-move-decr, .k-ships-move-incr").on("click", kApp.events.move);
+		$(".k-ships-move-action").on("click", kApp.events.moveFleet);
 	},
 	hideMove: function() {
 		$("#k-move").fadeOut();
