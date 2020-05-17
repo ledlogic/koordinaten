@@ -13,15 +13,14 @@
 	<div class="k-main clearfix">
 		<section id="k-canvas" class="k-canvas"></section>
 		<section id="k-console" class="k-console">
-			<label for="cmd">Command</label><br/>
-			<button id="build">BUILD</button>
-			<button id="move">MOVE</button>
-			<button id="info">INFO</button>
-			<input type="text" id="cmd" />
-			<button id="enter">ENTER</button>
-			
-			<pre id="log">
-			</pre>
+			<section id="k-system" class="k-system">
+				<h4>System</h4>
+				<div id="k-system-data"></div>
+			</section>
+			<section id="k-ships" class="k-ships">
+				<h4>Ships</h4>
+				<div id="k-ships-data"></div>
+			</section>
 		</section>
 	</div>
 	<footer class="clearfix">
@@ -36,6 +35,7 @@
 	<script src="js/k-canvas.js"></script>
 	<script src="js/k-bg.js"></script>
 	<script src="js/k-controls.js"></script>
+	<script src="js/k-data.js"></script>
 	<script src="js/k-events.js"></script>
 	<script src="js/k-geom.js"></script>
 	<script src="js/k-game.js"></script>

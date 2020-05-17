@@ -48,7 +48,7 @@ section.k-console {
 	position: absolute;
 	margin: 20px;
 	text-align: center;
-	width: 260px;
+	width: 360px;
 }
 
 section.k-console label {
@@ -121,4 +121,30 @@ footer {
 	border 1px solid white;
 	height: 200px;
 	overflow-y: auto;
+}
+
+.k-system, .k-ships {
+	display: none;
+	font-size: 0.8em;
+	text-transform: uppercase;
+}
+.k-system label, .k-ships label {
+	font-size: 1.2em;
+	color: #fff;
+}
+#k-system-data-table, #k-ships-data-table {
+	width: 100%;	
+}
+.k-system th, .k-system td,
+.k-ships th, .k-ships td {
+	border:1px solid #333;
+}
+.k-system .k-system-owner {
+	text-transform: uppercase;
+}
+.k-ships .k-ships-name {
+	text-align: left;
+}
+.k-ship .k-ships-current {
+	
 }

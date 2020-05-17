@@ -9,6 +9,8 @@ kApp.canvas = {
 		kApp.canvas.sizeCanvas();
 	},
 	sizeCanvas: function() {
+		var consoleWidth = 400;
+		
 		// @see http://jsfiddle.net/b5DGj/7/
 		var ww = document.body.clientWidth;
 		var wh = document.body.clientHeight;
@@ -18,7 +20,7 @@ kApp.canvas = {
 		var $f = $("footer");
 		var fms = parseInt($f.css("marginTop"),10);
 		var fh = $f.height();
-		var w = ww - 300 - 40;
+		var w = ww - consoleWidth - 40;
 		var h = wh - hh - hms * 2 - fh - fms * 2;
 		
 		// canvas
@@ -27,9 +29,9 @@ kApp.canvas = {
 
 		// control
 		var $elControl = $('#k-console');
-		$elControl.width(300 - 20);
+		$elControl.width(consoleWidth - 20);
 		$elControl.height(h);
-		$elControl.css("left", ww - 300 - 20);
+		$elControl.css("left", ww - consoleWidth - 20);
 		kApp.canvas.$elControl = $elControl;
 		
 		// coordinates

@@ -178,14 +178,8 @@ kApp.render = {
 	},
 	
 	system: function(s) {
-		noFill();
-		stroke(255);
-		
 		var cpt = kApp.geom.rPt2Cpt(s.rPt.x, s.rPt.y);
 		
-		kApp.render.systemFill(s);
-		kApp.render.systemStroke(s);
-
 		// selected
 		if (s.selected) {
 			stroke(255);
@@ -198,6 +192,8 @@ kApp.render = {
 			circle(cpt.x, cpt.y, cRadius);
 		}
 
+		// system
+		kApp.render.systemFill(s);
 		noStroke();
 		var cRadius = kApp.geom.dimR2C(s.radius * 1.0);
 		circle(cpt.x, cpt.y, cRadius);

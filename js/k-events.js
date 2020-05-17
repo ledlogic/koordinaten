@@ -22,6 +22,9 @@ kApp.events = {
 			});
 			if (s) {
 				s.selected = true;
+				kApp.data.showSystem(s);
+			} else {
+				kApp.data.hideSystem();
 			}
 		}
 	}

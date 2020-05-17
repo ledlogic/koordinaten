@@ -53,6 +53,14 @@ kApp.game = {
 	        av: 10,
 	        dv: 8,
 	        bc: 4
+	    },
+	    {
+	    	name: "Defenses",
+	    	type: "SA",
+	        credits: -1,
+	        av: 1,
+	        dv: 1,
+	        bc: 1
 	    }
     ],
 	systems: [
@@ -117,6 +125,7 @@ kApp.game = {
 	init: function() {
 		_.each(kApp.game.systems, function(system) {
 			system.selected = false;
+			system.building = ["0,0,0,0,0", "0,0,0,0,0", "0,0,0,0,0", "0,0,0,0,0", "0,0,0,0,0", "0,0,0,0,0", "0,0,0,0,0"];
 		});
 	},
 
@@ -125,5 +134,11 @@ kApp.game = {
 			return kApp.geom.ptInCircle(rPt, system.rPt, system.radius + kApp.geom.rDistance);
 		});
 		return ret;
+	},
+	
+	getPlayer: function(color) {
+		var ret = _.find(kApp.game.players, function(player) {
+			return player.color == color;
+		});
 	}
 };
