@@ -6,9 +6,27 @@ kApp.render = {
 			ellipses: false,
 			ordinals: true
 		},
+		moves: {
+			delta: 0.04,
+			velocity: 4,
+			init: function() {
+				kApp.render.settings.moves.start = 0;
+				kApp.render.settings.moves.end = kApp.render.settings.moves.delta;				
+			},
+			incr: function(dist) {
+				kApp.render.settings.moves.start += kApp.render.settings.moves.velocity / dist;
+				kApp.render.settings.moves.end = Math.min(kApp.render.settings.moves.end + kApp.render.settings.moves.velocity / dist, 1.0);
+				if (kApp.render.settings.moves.start >= 1 - 0.05) {
+					kApp.render.settings.moves.init();
+				}
+			}
+		},
 		system: {
 			coord: true
 		}
+	},
+	init: function() {
+		kApp.render.settings.moves.init();
 	},
 	fps: function() {
 		var fps = frameRate();
@@ -174,6 +192,39 @@ kApp.render = {
 			stroke(100, 110, 200);
 		} else {
 			stroke(200, 110, 100);
+		}
+	},
+	
+	moves: function() {
+		var selected = kApp.game.getSelectedSystem();
+		var destination = kApp.game.getDestinationSystem();
+		if (selected && destination) {
+			// line
+			stroke(100);
+			var pt1 = kApp.geom.rPt2Cpt(selected.rPt);
+			var pt2 = kApp.geom.rPt2Cpt(destination.rPt);
+			line(pt1.x, pt1.y, pt2.x, pt2.y);
+			
+			// animation
+			stroke(200);
+			var rPt1 = kApp.geom.rPtBetween(selected.rPt, destination.rPt, kApp.render.settings.moves.start);
+			var rPt2 = kApp.geom.rPtBetween(selected.rPt, destination.rPt, kApp.render.settings.moves.end);
+			var pt1 = kApp.geom.rPt2Cpt(rPt1);
+			var pt2 = kApp.geom.rPt2Cpt(rPt2);
+			line(pt1.x, pt1.y, pt2.x, pt2.y);
+			
+			// distance text
+			noStroke();
+			fill(200);
+			textFont("Calibri");
+			var dist = kApp.geom.rdist(selected.rPt, destination.rPt);
+			var t = Math.round(dist) + " ps";
+			var midPt = kApp.geom.rPtBetween(selected.rPt, destination.rPt, 0.5);
+			var tPt = kApp.geom.rPt2Cpt(midPt);
+			text(t, tPt.x+15, tPt.y+4);
+			
+			// incr for next time
+			kApp.render.settings.moves.incr(dist);
 		}
 	},
 	

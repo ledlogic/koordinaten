@@ -59,6 +59,10 @@ kApp.geom = {
 	},
 	
 	rPt2Cpt: function(rx, ry) {
+		if (arguments.length == 1) {
+			ry = rx.y;
+			rx = rx.x;
+		}
 		var rrect = kApp.geom.map.rrect;
 		var crect = kApp.geom.map.crect;
 		var ret = new kApp.geom.cPt(
@@ -84,6 +88,13 @@ kApp.geom = {
 	ptInCircle: function(rPt, ePt, eRadius) {
 		var rDist = kApp.geom.rdist(rPt, ePt);
 		ret = (rDist <= eRadius);
+		return ret;
+	},
+	
+	rPtBetween: function(rPt1, rPt2, ratio) {
+		var vrPt = new kApp.geom.rPt(rPt2.x - rPt1.x, rPt2.y - rPt1.y);
+		var srPt = new kApp.geom.rPt(ratio * vrPt.x, ratio * vrPt.y);
+		var ret = new kApp.geom.rPt(rPt1.x + srPt.x, rPt1.y + srPt.y);
 		return ret;
 	}
 };

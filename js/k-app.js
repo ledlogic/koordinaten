@@ -5,6 +5,7 @@ var kApp = {
 		kApp.sprites.init();
 		kApp.controls.init();
 		kApp.events.init();
+		kApp.render.init();
 	},
 	log: function(s) {
 		console.log(s);
