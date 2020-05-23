@@ -8,9 +8,10 @@ function draw() {
 	kApp.render.stars();
 	kApp.render.moves();
 	kApp.render.systems();
-	//kApp.render.grid();
+	kApp.render.grid();
 	kApp.render.fleets();
 	kApp.render.fps();
+	kApp.render.news();
 	kApp.sprites.update();
 	kApp.game.update();
 }
