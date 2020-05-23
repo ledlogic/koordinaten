@@ -1,7 +1,10 @@
 kApp.game = {
 	settings: {
 		turn: 0,
+		defaultTurnRatePerMs: 0.000025,
 		turnRatePerMs: 0.000025,
+		maxTurnRatePerMs: 0.0008,     // about 1 turn/second
+		minTurnRatePerMs: 0.00000625,   // about 100 deltas/second
 		lastCheckMs: 0 
 	},
 	players: [
@@ -25,7 +28,8 @@ kApp.game = {
 	        credits: 2,
 	        av: 1,
 	        dv: 1,
-	        bc: 1
+	        bc: 1,
+	        mv: 2
 	    },
 	    {
 	    	name: "Destroyer",
@@ -33,7 +37,8 @@ kApp.game = {
 	        credits: 4,
 	        av: 3,
 	        dv: 2,
-	        bc: 2
+	        bc: 2,
+	        mv: 1.5
 	    },
 	    {
 	    	name: "Cruiser",
@@ -41,7 +46,8 @@ kApp.game = {
 	        credits: 8,
 	        av: 6,
 	        dv: 4,
-	        bc: 3
+	        bc: 3,
+	        mv: 1
 	    },
 	    {
 	    	name: "Attack Cruiser",
@@ -49,7 +55,8 @@ kApp.game = {
 	        credits: 5,
 	        av: 5,      
 	        dv: 2,
-	        bc: 3
+	        bc: 3,
+	        mv: 1.2
 	    },
 	    {
 	    	name: "Dreadnought",
@@ -57,7 +64,8 @@ kApp.game = {
 	        credits: 15,
 	        av: 10,
 	        dv: 8,
-	        bc: 4
+	        bc: 4,
+	        mv: 1
 	    },
 	    {
 	    	name: "Defenses",
@@ -65,7 +73,8 @@ kApp.game = {
 	        credits: -1,
 	        av: 1,
 	        dv: 1,
-	        bc: 1
+	        bc: 1,
+	        mv: 0
 	    }
     ],
 	systems: [
@@ -151,7 +160,16 @@ kApp.game = {
 			system: null,
 			destination: null,
 			ships: [],
-			rPt: null
+			rPt: null,
+			radius: 5,
+			theta: Math.random() * Math.PI * 2.0,
+			absv: ((Math.random() * 0.5) + 0.5),
+			//v: {x:this.absv * Math.cos(this.theta), y:this.absv * Math.sin(this.theta)},
+		 	v: {x:0.0, y:0.0},
+			a: {x:0.0, y:0.0},
+			thetav: 0.0,
+			thetaa: 0.0,
+			coord: [10, 0, -7.07, 7.07, -7.07, -7.07],
 		};
 		_.each(kApp.game.ships, function(ship, i) {
 			kApp.game.currentFleet.ships[i] = 0;

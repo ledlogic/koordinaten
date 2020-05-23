@@ -27,7 +27,8 @@ kApp.data = {
 		h.push("<span id=\"k-game-turn-rate-value\">");
 		h.push("</span>");
 		h.push("<button class=\"k-data-button k-game-turn-rate-incr\" data-rate-change=\"2.0\">+</button>");
-		h.push("</td>");
+		h.push(" ");
+		h.push("<button class=\"k-data-button k-game-turn-rate-reset\">Reset</button>");
 		h.push("</tr>");
 		
 		h.push("</table>");
@@ -39,6 +40,9 @@ kApp.data = {
 		
 		var $buttons = $(".k-game-turn-rate-decr, .k-game-turn-rate-incr");
 		$buttons.on("click", kApp.events.changeTurnRate);
+		
+		var $reset = $(".k-game-turn-rate-reset");
+		$reset.on("click", kApp.events.resetTurnRate);
 	},
 	
 	updateGame: function() {
@@ -57,7 +61,7 @@ kApp.data = {
 		h.push("Player");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Credits");
+		h.push("Credits (¤)");
 		h.push("</th>");
 		h.push("</tr>");
 		
@@ -65,7 +69,7 @@ kApp.data = {
 			var name = kApp.game.players[i].name;
 			var color = kApp.game.players[i].color;
 			var credits = kApp.game.players[i].credits;
-			var creditDisplay = "¤ " + credits;
+			var creditDisplay = credits;
 
 			h.push("<tr>");
 			h.push("<td class=\"k-player-name k-color-" + color + "\">");
@@ -100,10 +104,10 @@ kApp.data = {
 		h.push("<th>Owner</th><td class=\"k-system-owner k-color-" + color + "\">" + player.name + "</td>");
 		h.push("</tr>");
 		h.push("<tr>");
-		h.push("<th>Strength</th><td class=\"k-system-defense\">" + defense + "</td>");
+		h.push("<th>Defense (⛨)</th><td class=\"k-system-defense\">" + defense + "</td>");
 		h.push("</tr>");
 		h.push("<tr>");
-		h.push("<th>Income</th><td class=\"k-system-credits\">" + credits + "</td>");
+		h.push("<th>Income (¤/Turn)</th><td class=\"k-system-credits\">" + credits + "</td>");
 		h.push("</tr>");
 		h.push("</table>");
 		$("#k-system-data").html(h.join(""));
@@ -115,22 +119,25 @@ kApp.data = {
 		
 		h.push("<tr>");
 		h.push("<th>");
-		h.push("Qty");
+		h.push("#");
 		h.push("</th>");
 		h.push("<th>");
 		h.push("Type");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Att");
+		h.push("⚔");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Def");
+		h.push("⛨");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Cost");
+		h.push("✈");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Building");
+		h.push("¤");
+		h.push("</th>");
+		h.push("<th>");
+		h.push("🛠");
 		h.push("</th>");
 		h.push("</tr>");
 		
@@ -138,7 +145,7 @@ kApp.data = {
 			var name = kApp.game.ships[i].name;
 			var ships = s.ships[i];
 			var ship = kApp.game.ships[i];
-			var creditDisplay = ship.credits > 0 ? "¤ " + ship.credits : "NA";
+			var creditDisplay = ship.credits > 0 ? ship.credits : "NA";
 			var buildingArr = s.building[i].split(",");
 			var buildingArr2 = [];
 			_.each(buildingArr, function(b, i) {
@@ -153,9 +160,6 @@ kApp.data = {
 			h.push("<tr>");
 			h.push("<td class=\"k-ships-current\">");
 			h.push(ships);
-			if (buildable) {
-				h.push("<button class=\"k-data-button k-ships-incr\" data-ship-i=\"" + i + "\">+</button>");
-			}
 			h.push("</td>");
 
 			h.push("<td class=\"k-ships-name\">");
@@ -170,11 +174,18 @@ kApp.data = {
 			h.push(ship.dv);
 			h.push("</td>");
 			
+			h.push("<td class=\"k-ships-move\">");
+			h.push(ship.mv);
+			h.push("</td>");
+			
 			h.push("<td class=\"k-ships-credits\">");
 			h.push(creditDisplay);
 			h.push("</td>");
 			
 			h.push("<td class=\"k-ships-building\">");
+			if (buildable) {
+				h.push("<button class=\"k-data-button k-ships-incr\" data-ship-i=\"" + i + "\">+</button>");
+			}
 			h.push(building);
 			h.push("</td>");
 			
@@ -221,7 +232,7 @@ kApp.data = {
 		h.push("Type");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Att");
+		h.push("⚔");
 		h.push("</th>");
 		h.push("<th>");
 		h.push("Def");

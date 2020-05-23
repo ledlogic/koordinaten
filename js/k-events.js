@@ -35,6 +35,8 @@ kApp.events = {
 		kApp.data.showPlayers();
 		kApp.data.showSystem(system);
 	},
+	
+	// user has entered movement state
 	move: function() {
 		var $that = $(this);
 		var i = $that.data("ship-i");
@@ -63,8 +65,10 @@ kApp.events = {
 		
 		$(".k-data-move-ship-" + i).html(currentFleet.ships[i]);
 	},
+	
+	// user is in the movement state.
+	// user has said to move the current fleet
 	moveFleet: function() {
-		debugger;
 		var $that = $(this);
 		var selectedSystem = kApp.game.getSelectedSystem();
 		if (selectedSystem == null) {
@@ -89,8 +93,9 @@ kApp.events = {
 		kApp.game.currentFleet.selectedSystem = selectedSystem;
 		kApp.game.currentFleet.destinationSystem = destinationSystem;
 		kApp.game.currentFleet.rPt = selectedSystem.rPt;
+		kApp.game.currentFleet.mv = kApp.sprites.averageMv(currentFleet.ships)
 		kApp.game.fleets.push(kApp.game.currentFleet);
-		
+				
 		// update
 		kApp.game.resetCurrentFleet();
 		kApp.game.clearDestinationSystems();
@@ -132,7 +137,17 @@ kApp.events = {
 	changeTurnRate: function() {
 		var $that = $(this);
 		var change = parseFloat($that.data("rate-change"), 10);
-		kApp.game.settings.turnRatePerMs = kApp.game.settings.turnRatePerMs * change; 
+		var newRate = kApp.game.settings.turnRatePerMs * change;
+		
+		newRate = Math.max(newRate, kApp.game.settings.minTurnRatePerMs);
+		newRate = Math.min(newRate, kApp.game.settings.maxTurnRatePerMs);
+		
+		kApp.game.settings.turnRatePerMs = newRate;
+		
+		kApp.data.updateGame();
+	},
+	resetTurnRate: function() {
+		kApp.game.settings.turnRatePerMs = kApp.game.settings.defaultTurnRatePerMs; 
 		kApp.data.updateGame();
 	}
 }

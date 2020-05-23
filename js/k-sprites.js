@@ -34,5 +34,19 @@ kApp.sprites = {
 	shipUpdate: function(s) {
 		s.pt.x += s.v.x;
 		s.pt.y += s.v.y;
+	},
+	averageMv: function(ships) {
+		var totMv = 0;
+		var totShips = 0;
+		for (var i=0;i<ships.length;i++) {
+			var s = ships[i];
+			if (s) {
+				var mv = kApp.game.ships[i].mv;
+				totShips += s;
+				totMv += s * mv;
+			}
+		}
+		var aveMv = (totMv / totShips);
+		return aveMv;
 	}
 };

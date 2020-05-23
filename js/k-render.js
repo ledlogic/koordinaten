@@ -114,10 +114,8 @@ kApp.render = {
 			}
 		}
 	},
-	ship: function(s) {
-		var st = Math.round(127 + s.intensity*128);
-		stroke(st);
-		var pt = kApp.geom.rPt2Cpt(s.pt.x, s.pt.y);
+	fleet: function(s) {
+		var pt = kApp.geom.rPt2Cpt(s.rPt.x, s.rPt.y);
 		
 		noFill();
 		stroke("green");
@@ -142,8 +140,8 @@ kApp.render = {
 		
 		// translate
 		for (var i=0; i+1<s.coord.length; i+=2) {
-			s.rcoord[i] = s.rcoord[i] + s.pt.x;
-			s.rcoord[i+1] = s.rcoord[i+1] + s.pt.y;
+			s.rcoord[i] = s.rcoord[i] + s.rPt.x;
+			s.rcoord[i+1] = s.rcoord[i+1] + s.rPt.y;
 		}
 
 		s.cpt = [];
@@ -157,10 +155,10 @@ kApp.render = {
 		fill("red");
 		triangle(s.cpt[0], s.cpt[1], s.cpt[2], s.cpt[3], s.cpt[4], s.cpt[5]);
 	},
-	ships: function() {
-		for (var i=0;i<kApp.sprites.ships.length;i++) {
-			var s = kApp.sprites.ships[i];
-			kApp.render.ship(s);
+	fleets: function() {
+		for (var i=0;i<kApp.game.fleets.length;i++) {
+			var fleet = kApp.game.fleets[i];
+			kApp.render.fleet(fleet);
 		}	
 	},
 	star: function(s) {
