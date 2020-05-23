@@ -87,24 +87,35 @@ kApp.events = {
 		// remove ships from selected system
 		// last minute correction for ships lost in action
 		// prevent sneak resurrection through move screen, negative ship counts
+		var totalShips = 0;
 		for (var i=0; i<kApp.game.ships.length - 1;i++) {
 			var qty = Math.min(currentFleet.ships[i], selectedSystem.ships[i]);
 			selectedSystem.ships[i] -= qty;
 			currentFleet.ships[i] = qty;
+			totalShips += qty;
 		}
 		
-		// build up current fleet stats		
-		var fleet = kApp.game.currentFleet;
-		fleet.selectedSystem = selectedSystem;
-		fleet.destinationSystem = destinationSystem;
-		fleet.startPt = selectedSystem.rPt;
-		fleet.endPt = destinationSystem.rPt;
-		fleet.rPt = fleet.startPt;
-		fleet.mv = kApp.sprites.averageMv(currentFleet.ships)
-		fleet.startTurn = kApp.game.settings.turn;
-		fleet.rdist =  kApp.geom.rdist(fleet.startPt, fleet.endPt);
-		kApp.game.fleets.push(fleet);
-				
+		if (totalShips) {
+			// build up current fleet stats		
+			var fleet = kApp.game.currentFleet;
+			fleet.color = selectedSystem.color;
+			fleet.rcolor = kApp.game.getPlayer(fleet.color).rcolor;
+			kApp.log(fleet.rcolor);
+			fleet.selectedSystem = selectedSystem;
+			fleet.destinationSystem = destinationSystem;
+			fleet.startPt = selectedSystem.rPt;
+			fleet.endPt = destinationSystem.rPt;
+			fleet.rPt = fleet.startPt;
+			fleet.mv = kApp.sprites.averageMv(currentFleet.ships)
+			fleet.startTurn = kApp.game.settings.turn;
+			fleet.rdist =  kApp.geom.rdist(fleet.startPt, fleet.endPt);
+			fleet.theta = kApp.geom.radians(fleet.startPt, fleet.endPt);
+			fleet.totalShips = totalShips;
+			kApp.game.fleets.push(fleet);
+			
+			kApp.news.add(fleet.rcolor, "Created fleet of " + totalShips + " ships, headed from " + selectedSystem.name + " to " + destinationSystem.name);
+		}
+		
 		// update
 		kApp.game.resetCurrentFleet();
 		kApp.game.clearDestinationSystems();
@@ -161,5 +172,9 @@ kApp.events = {
 	resetTurnRate: function() {
 		kApp.game.settings.turnRatePerMs = kApp.game.settings.defaultTurnRatePerMs; 
 		kApp.data.updateGame();
+	},
+	
+	startGame: function() {
+		kApp.game.start();
 	}
 }

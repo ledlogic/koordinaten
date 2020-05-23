@@ -1,24 +1,27 @@
 kApp.game = {
 	settings: {
-		turn: 0,
+		turn: 1,
 		defaultTurnRatePerMs: 0.000025,
 		turnRatePerMs: 0.000025,
 		maxTurnRatePerMs: 0.0008,     // about 1 turn/second
 		minTurnRatePerMs: 0.00000625,   // about 100 deltas/second
 		lastCheckMs: 0,
-		spacetime: 100
+		spacetime: 100,
+		started: false
 	},
 	players: [
 	    {
 	    	name: "AI",
 	    	type: "AI",
 	        color: "blue",
+	        rcolor: "rgb(100, 110, 200)",
 	        credits: 0
 	    },
 	    {
 	    	name: "Human",
 	    	type: "HUMAN",
 	        color: "red",
+	        rcolor: "rgb(200, 110, 100)",
 	        credits: 0 
 	    }
 	],
@@ -145,6 +148,7 @@ kApp.game = {
 		}
 	],
 	fleets: [],	
+	
 	init: function() {
 		var time = "0,0,0,0";
 		_.each(kApp.game.systems, function(system) {
@@ -152,9 +156,21 @@ kApp.game = {
 			system.selected = false;
 			system.destinationCount = 0;
 			system.building = [time, time, time, time, time, time, time];
+			system.enemyShips = [0, 0, 0, 0, 0, 0];
 		});
 		kApp.game.resetCurrentFleet();
 	},
+	
+	start: function() {
+		kApp.game.settings.started = true;
+		var newMs = kApp.date.getMs();
+		kApp.game.settings.lastCheckMs = newMs;
+		kApp.data.showGame();
+
+		kApp.news.add("", "Game: started");
+		kApp.game.newTurn();
+	},
+	
 	resetCurrentFleet: function() {
 		kApp.game.currentFleet = {
 			color: null,
@@ -247,8 +263,13 @@ kApp.game = {
 	},
 
 	update: function() {
+		// if game not yet started, pause
+		if (!kApp.game.settings.started) {
+			return;
+		}
+		
 		var turn = kApp.game.settings.turn;
-		var newMs = kApp.date.getMs()
+		var newMs = kApp.date.getMs();
 		var lastCheckMs = kApp.game.settings.lastCheckMs;
 		var turnRatePerMs = kApp.game.settings.turnRatePerMs;
 		
@@ -258,19 +279,34 @@ kApp.game = {
 			kApp.game.settings.lastCheckMs = newMs;
 			kApp.data.updateGame();
 			
+			// update news
+			kApp.news.update(newMs);
+			
 			// update turn-based sprites
+			var newFleets = [];
+			var arrivedFleets = [];
 			_.each(kApp.game.fleets, function(fleet) {
 				var lastTurn = fleet.startTurn;
 				var turn = kApp.game.settings.turn;
 				var elapsed = turn - lastTurn;
 				var dist = fleet.mv * elapsed * kApp.game.settings.spacetime;
-				var ratio = dist/fleet.rdist;
+				var ratio = dist/fleet.rdist; 
+				ratio = Math.min(ratio, 1.0);
+				ratio = Math.max(ratio, 0.0);
+				fleet.ratio = ratio;
 				var rPt = kApp.geom.rPtBetween(fleet.startPt, fleet.endPt, ratio);
-				fleet.rPt = rPt;
+				fleet.rPt = rPt;		
+				kApp.log("ratio[" + ratio + "], dist[" + dist + "], startPt[" + fleet.startPt + "], endPt[" + fleet.endPt + "], rPt[" + rPt + "]");
+				if (ratio == 1.0) {
+					arrivedFleets.push(fleet);
+				} else {
+					newFleets.push(fleet);
+				}
+			});			
+			if (arrivedFleets.length) {
+				kApp.game.fleets = newFleets;
+			}
 				
-				kApp.log("dist[" + dist + "], startPt[" + fleet.startPt + "], endPt[" + fleet.endPt + "], rPt[" + rPt + "]");
-			});
-			
 			// check for new game turn
 			if (Math.floor(kApp.game.settings.turn) - Math.floor(turn) >= 1) {
 				kApp.game.newTurn();
@@ -280,6 +316,8 @@ kApp.game = {
 	
 	newTurn: function() {
 		kApp.log("newTurn");
+		var t = Math.floor(kApp.game.settings.turn);
+		kApp.news.add("", "Game: Turn " + t + " started");
 		
 		// increment credits
 		kApp.log("newTurn: increment credits");

@@ -96,5 +96,10 @@ kApp.geom = {
 		var srPt = new kApp.geom.rPt(ratio * vrPt.x, ratio * vrPt.y);
 		var ret = new kApp.geom.rPt(rPt1.x + srPt.x, rPt1.y + srPt.y);
 		return ret;
+	},
+	
+	radians: function(rPt1, rPt2) {
+		var r = Math.atan2(rPt2.y - rPt1.y, rPt2.x - rPt1.x);
+		return r;
 	}
 };

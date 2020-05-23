@@ -15,6 +15,9 @@ kApp.data = {
 		h.push("<td class=\"k-game-turn\">");
 		h.push("<span id=\"k-game-turn-value\">");
 		h.push("</span>");
+		if (!kApp.game.settings.started) {
+			h.push("<button class=\"k-data-button k-game-start\" >Start</button>");
+		}
 		h.push("</td>");
 		h.push("</tr>");
 		
@@ -37,6 +40,9 @@ kApp.data = {
 		$("#k-game").fadeIn();
 		
 		kApp.data.updateGame();
+		
+		var $start = $(".k-game-start");
+		$start.on("click", kApp.events.startGame);
 		
 		var $buttons = $(".k-game-turn-rate-decr, .k-game-turn-rate-incr");
 		$buttons.on("click", kApp.events.changeTurnRate);
@@ -112,6 +118,7 @@ kApp.data = {
 		h.push("</table>");
 		$("#k-system-data").html(h.join(""));
 		$("#k-system").fadeIn();
+		$("#k-system-data").on("selectstart", function() {return false;});
 		
 		var h = [];
 		
@@ -194,7 +201,7 @@ kApp.data = {
 		h.push("</table>");
 		$("#k-ships-data").html(h.join(""));
 		$("#k-ships").fadeIn();
-		
+		$("#k-ships-data").on("selectstart", function() {return false;});
 		$(".k-ships-incr").on("click", kApp.events.build);
 	},
 	hideSystem: function(s) {
@@ -209,6 +216,9 @@ kApp.data = {
 		}
 		var	destinationSystem = kApp.game.getDestinationSystem();
 		if (destinationSystem == null) {
+			return;
+		}
+		if (!kApp.game.settings.started) {
 			return;
 		}
 		
@@ -278,6 +288,7 @@ kApp.data = {
 		$("#k-move-data").html(h.join(""));
 		$("#k-move").fadeIn();
 		
+		$("#k-move-data").on("selectstart", function() {return false;});
 		$(".k-ships-move-decr, .k-ships-move-incr").on("click", kApp.events.move);
 		$(".k-ships-move-action").on("click", kApp.events.moveFleet);
 	},
