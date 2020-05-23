@@ -121,10 +121,11 @@ kApp.render = {
 	fleet: function(s) {
 		var pt = kApp.geom.rPt2Cpt(s.rPt.x, s.rPt.y);
 		
-		noFill();
-		stroke("green");
-		var cRadius = kApp.geom.dimR2C(s.radius * 1.2);
-		circle(pt.x, pt.y, cRadius);
+		// shields
+		//noFill();
+		//stroke("green");
+		//var cRadius = kApp.geom.dimR2C(s.radius * 1.2);
+		//circle(pt.x, pt.y, cRadius);
 		
 		// rotate
 		s.rcoord = [];
@@ -156,8 +157,15 @@ kApp.render = {
 		}
 		
 		stroke(153);
-		fill("red");
+		fill(s.rcolor);
 		triangle(s.cpt[0], s.cpt[1], s.cpt[2], s.cpt[3], s.cpt[4], s.cpt[5]);
+		
+		// distance text
+		noStroke();
+		textFont("Calibri");
+		var t = s.totalShips;
+		var tPt = kApp.geom.rPt2Cpt(s.rPt);
+		text(t, tPt.x-5, tPt.y+10);
 	},
 	fleets: function() {
 		for (var i=0;i<kApp.game.fleets.length;i++) {
@@ -219,7 +227,8 @@ kApp.render = {
 			fill(200);
 			textFont("Calibri");
 			var dist = kApp.geom.rdist(selected.rPt, destination.rPt);
-			var t = Math.round(dist) + " ps";
+			var symbol = (selected.color == destination.color) ? "⛨" : "⚔";
+			var t = symbol + " " + Math.round(dist) + " ps";
 			var midPt = kApp.geom.rPtBetween(selected.rPt, destination.rPt, 0.5);
 			var tPt = kApp.geom.rPt2Cpt(midPt);
 			text(t, tPt.x+15, tPt.y+4);
@@ -270,53 +279,5 @@ kApp.render = {
 			var s = kApp.game.systems[i];
 			kApp.render.system(s);
 		}
-	},
-	
-	test: function() {
-		fill(0);
-
-		var rcoord = [100,0, 70.7,70.7, 0,100];
-		var cpt = [];
-		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
-			cpt[i] = pt.x;
-			cpt[i+1] = pt.y;
-		}
-		
-		stroke(200);
-		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
-		
-		var rcoord = [0,100, -70.7,70.7, -100,0];
-		var cpt = [];
-		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
-			cpt[i] = pt.x;
-			cpt[i+1] = pt.y;
-		}
-
-		stroke(150);
-		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
-
-		var rcoord = [-100,0, -70.7,-70.7, 0,-100];
-		var cpt = [];
-		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
-			cpt[i] = pt.x;
-			cpt[i+1] = pt.y;
-		}
-
-		stroke(100);
-		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
-
-		var rcoord = [0,-100, 70.7,-70.7, 100,0];
-		var cpt = [];
-		for (var i=0; i+1<rcoord.length; i+=2) {
-			var pt = kApp.geom.rPt2Cpt(rcoord[i], rcoord[i+1]);
-			cpt[i] = pt.x;
-			cpt[i+1] = pt.y;
-		}
-
-		stroke(50);
-		triangle(cpt[0], cpt[1], cpt[2], cpt[3], cpt[4], cpt[5]);
 	}
 };

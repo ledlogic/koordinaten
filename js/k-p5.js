@@ -8,8 +8,6 @@ function draw() {
 	kApp.render.stars();
 	kApp.render.moves();
 	kApp.render.systems();
-	//kApp.render.ships();
-	//kApp.render.test();
 	//kApp.render.grid();
 	kApp.render.fleets();
 	kApp.render.fps();
