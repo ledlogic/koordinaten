@@ -2,6 +2,7 @@ kApp.events = {
 	init: function() {
 		
 	},
+	
 	// user clicked the i-th ship build button for the current selected system
 	build: function() {
 		var $that = $(this);
@@ -84,17 +85,25 @@ kApp.events = {
 		}
 		
 		// remove ships from selected system
+		// last minute correction for ships lost in action
+		// prevent sneak resurrection through move screen, negative ship counts
 		for (var i=0; i<kApp.game.ships.length - 1;i++) {
-			var qty = currentFleet.ships[i];
+			var qty = Math.min(currentFleet.ships[i], selectedSystem.ships[i]);
 			selectedSystem.ships[i] -= qty;
+			currentFleet.ships[i] = qty;
 		}
 		
-		// build up fleet		
-		kApp.game.currentFleet.selectedSystem = selectedSystem;
-		kApp.game.currentFleet.destinationSystem = destinationSystem;
-		kApp.game.currentFleet.rPt = selectedSystem.rPt;
-		kApp.game.currentFleet.mv = kApp.sprites.averageMv(currentFleet.ships)
-		kApp.game.fleets.push(kApp.game.currentFleet);
+		// build up current fleet stats		
+		var fleet = kApp.game.currentFleet;
+		fleet.selectedSystem = selectedSystem;
+		fleet.destinationSystem = destinationSystem;
+		fleet.startPt = selectedSystem.rPt;
+		fleet.endPt = destinationSystem.rPt;
+		fleet.rPt = fleet.startPt;
+		fleet.mv = kApp.sprites.averageMv(currentFleet.ships)
+		fleet.startTurn = kApp.game.settings.turn;
+		fleet.rdist =  kApp.geom.rdist(fleet.startPt, fleet.endPt);
+		kApp.game.fleets.push(fleet);
 				
 		// update
 		kApp.game.resetCurrentFleet();
@@ -102,12 +111,14 @@ kApp.events = {
 		kApp.data.hideMove();
 		kApp.data.showSystem();
 	},
+	
 	info: function() {
 		
 	},
+	
 	selectSystem: function(s) {
 		if (!s || !s.selected) {
-			kApp.log("clearingSystems");
+			//kApp.log("clearingSystems");
 			kApp.game.clearSelectedSystems();
 			if (s) {
 				s.selected = true;
@@ -117,6 +128,7 @@ kApp.events = {
 			}
 		}
 	},
+	
 	potentialMove: function() {
 		var selectedSystem = kApp.game.getSelectedSystem();
 		if (selectedSystem != null) {
@@ -131,21 +143,21 @@ kApp.events = {
 			}
 		}
 	},
+	
 	moveStarted: function() {
 		kApp.log("moveStarted");
 	},
+	
 	changeTurnRate: function() {
 		var $that = $(this);
 		var change = parseFloat($that.data("rate-change"), 10);
 		var newRate = kApp.game.settings.turnRatePerMs * change;
-		
 		newRate = Math.max(newRate, kApp.game.settings.minTurnRatePerMs);
 		newRate = Math.min(newRate, kApp.game.settings.maxTurnRatePerMs);
-		
 		kApp.game.settings.turnRatePerMs = newRate;
-		
 		kApp.data.updateGame();
 	},
+	
 	resetTurnRate: function() {
 		kApp.game.settings.turnRatePerMs = kApp.game.settings.defaultTurnRatePerMs; 
 		kApp.data.updateGame();

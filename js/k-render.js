@@ -25,9 +25,11 @@ kApp.render = {
 			coord: false
 		}
 	},
+	
 	init: function() {
 		kApp.render.settings.moves.init();
 	},
+	
 	fps: function() {
 		var fps = frameRate();
 		fill(255);
@@ -38,6 +40,7 @@ kApp.render = {
 		var y = kApp.geom.map.crect.height - 10;
 		text("FPS: " + fps.toFixed(0), 10, y);
 	},
+	
 	grid: function() {
 		var major = 100;
 		var minor = 20;
@@ -114,6 +117,7 @@ kApp.render = {
 			}
 		}
 	},
+	
 	fleet: function(s) {
 		var pt = kApp.geom.rPt2Cpt(s.rPt.x, s.rPt.y);
 		
@@ -260,12 +264,14 @@ kApp.render = {
 		}
 		text(t, cpt.x+15, cpt.y+4);
 	},
+	
 	systems: function() {
 		for (var i=0; i<kApp.game.systems.length; i++) {
 			var s = kApp.game.systems[i];
 			kApp.render.system(s);
 		}
 	},
+	
 	test: function() {
 		fill(0);
 

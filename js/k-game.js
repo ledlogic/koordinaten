@@ -5,7 +5,8 @@ kApp.game = {
 		turnRatePerMs: 0.000025,
 		maxTurnRatePerMs: 0.0008,     // about 1 turn/second
 		minTurnRatePerMs: 0.00000625,   // about 100 deltas/second
-		lastCheckMs: 0 
+		lastCheckMs: 0,
+		spacetime: 100
 	},
 	players: [
 	    {
@@ -252,10 +253,25 @@ kApp.game = {
 		var turnRatePerMs = kApp.game.settings.turnRatePerMs;
 		
 		if (newMs > lastCheckMs) {
+			// update turn data
 			kApp.game.settings.turn += (newMs - lastCheckMs) * turnRatePerMs;
 			kApp.game.settings.lastCheckMs = newMs;
 			kApp.data.updateGame();
 			
+			// update turn-based sprites
+			_.each(kApp.game.fleets, function(fleet) {
+				var lastTurn = fleet.startTurn;
+				var turn = kApp.game.settings.turn;
+				var elapsed = turn - lastTurn;
+				var dist = fleet.mv * elapsed * kApp.game.settings.spacetime;
+				var ratio = dist/fleet.rdist;
+				var rPt = kApp.geom.rPtBetween(fleet.startPt, fleet.endPt, ratio);
+				fleet.rPt = rPt;
+				
+				kApp.log("dist[" + dist + "], startPt[" + fleet.startPt + "], endPt[" + fleet.endPt + "], rPt[" + rPt + "]");
+			});
+			
+			// check for new game turn
 			if (Math.floor(kApp.game.settings.turn) - Math.floor(turn) >= 1) {
 				kApp.game.newTurn();
 			}
