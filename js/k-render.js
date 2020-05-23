@@ -4,7 +4,7 @@ kApp.render = {
 			major: false,
 			minor: false,
 			ellipses: false,
-			ordinals: true
+			ordinals: false
 		},
 		moves: {
 			delta: 0.04,
@@ -35,6 +35,7 @@ kApp.render = {
 		fill(255);
 		stroke(0);
 		textSize(14);
+		textStyle(NORMAL);
 		textFont('Microgramma Extd D');
 		
 		var y = kApp.geom.map.crect.height - 10;
@@ -57,7 +58,7 @@ kApp.render = {
 
 		// minor gridlines
 		if (kApp.render.settings.grid.minor) {
-			stroke(50, 50, 150);
+			stroke(25, 25, 75);
 			for (var x=xMin; x<=xMax; x+= minor) {
 				var pt1 = kApp.geom.rPt2Cpt(x, yMin);
 				var pt2 = kApp.geom.rPt2Cpt(x, yMax);
@@ -73,7 +74,7 @@ kApp.render = {
 		
 		// major gridlines
 		if (kApp.render.settings.grid.major) {
-			stroke(80, 80, 200);
+			stroke(40, 40, 100);
 	
 			for (var x=xMin; x<=xMax; x+= major) {
 				var pt1 = kApp.geom.rPt2Cpt(x, yMin);
@@ -103,7 +104,7 @@ kApp.render = {
 		
 		// ordinal gridlines
 		if (kApp.render.settings.grid.ordinals) {
-			stroke(220, 220, 220);
+			stroke(110, 110, 110);
 			{
 				var pt1 = kApp.geom.rPt2Cpt(0, yMin);
 				var pt2 = kApp.geom.rPt2Cpt(0, yMax);
@@ -162,10 +163,12 @@ kApp.render = {
 		
 		// distance text
 		noStroke();
+		textSize(8);
+		textStyle(NORMAL);
 		textFont("Calibri");
 		var t = s.totalShips;
 		var tPt = kApp.geom.rPt2Cpt(s.rPt);
-		text(t, tPt.x-5, tPt.y+10);
+		text(t, tPt.x-2, tPt.y+15);
 	},
 	fleets: function() {
 		for (var i=0;i<kApp.game.fleets.length;i++) {
@@ -225,7 +228,9 @@ kApp.render = {
 			// distance text
 			noStroke();
 			fill(200);
+			textSize(14);
 			textFont("Calibri");
+			textStyle(NORMAL);
 			var dist = kApp.geom.rdist(selected.rPt, destination.rPt);
 			var symbol = (selected.color == destination.color) ? "⛨" : "⚔";
 			var t = symbol + " " + Math.round(dist) + " ps";
@@ -266,6 +271,8 @@ kApp.render = {
 		} else {
 			kApp.render.systemFill(s);
 		}
+		textSize(14);
+		textStyle(NORMAL);
 		textFont("Calibri");
 		var t = s.name;
 		if (kApp.render.settings.system.coord) {
@@ -278,6 +285,25 @@ kApp.render = {
 		for (var i=0; i<kApp.game.systems.length; i++) {
 			var s = kApp.game.systems[i];
 			kApp.render.system(s);
+		}
+	},
+	
+	news: function() {
+		var x0 = 10;
+		var y0 = 20;
+		var yDelta = 20;
+		for (var i=0; i<kApp.news.items.length; i++) {
+			var item = kApp.news.items[i];
+			if (item.active) {
+				textSize(14);
+				textFont("Calibri");
+				textStyle(ITALIC);
+				var itemColor = color(item.color ? item.color : "(100,220,100)"); 
+				itemColor.setAlpha(Math.round(255 * item.active));
+				fill(itemColor);
+				var t = item.text;
+				text(t, x0, (i * yDelta) + y0);
+			}
 		}
 	}
 };
