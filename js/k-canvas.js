@@ -9,7 +9,7 @@ kApp.canvas = {
 		kApp.canvas.sizeCanvas();
 	},
 	sizeCanvas: function() {
-		var consoleWidth = 400;
+		var consoleWidth = 500;
 		
 		// @see http://jsfiddle.net/b5DGj/7/
 		var ww = document.body.clientWidth;

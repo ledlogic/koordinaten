@@ -19,5 +19,5 @@ var kApp = {
 
 //$(window).on('scroll resize', getVisible);
 function windowResized() {
-	//kApp.sizeCanvas();
+	kApp.canvas.sizeCanvas();
 }

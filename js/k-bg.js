@@ -3,10 +3,11 @@ kApp.bg = {
 	initialized: 0,
 	stars: [],
 	init: function(size) {
-		kApp.bg.starsArr(1000);
-		this.initialized = true;
+		if (!kApp.bg.initialized) {
+			kApp.bg.starsArr(1000);
+			kApp.bg.initialized = true;
+		}
 	},
-
 	// star constructor
 	star: function() {
 		this.rPt = kApp.random.rPtInRrect();
