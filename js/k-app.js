@@ -9,8 +9,7 @@ var kApp = {
 		kApp.render.init();
 		kApp.data.init();
 		kApp.ai.init();
-
-		kApp.game.newTurn();
+		kApp.news.init();
 	},
 	log: function(s) {
 		console.log(s);
