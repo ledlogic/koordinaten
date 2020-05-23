@@ -251,7 +251,7 @@ kApp.data = {
 		
 				h.push("<td class=\"k-ships-moving\">");
 				var moving = kApp.game.currentFleet.ships[i];
-				h.push("<button class=\"k-data-button k-ships-move-desc\" data-ship-i=\"" + i + "\" data-move-change=\"-1\">-</button>");
+				h.push("<button class=\"k-data-button k-ships-move-decr\" data-ship-i=\"" + i + "\" data-move-change=\"-1\">-</button>");
 				h.push("<span class=\"k-data-move-ship-" + i + "\" data-ship-i=\"" + i + "\">" + moving + "</span>");
 				h.push("<button class=\"k-data-button k-ships-move-incr\" data-ship-i=\"" + i + "\" data-move-change=\"1\">+</button>");
 				h.push("</td>");
