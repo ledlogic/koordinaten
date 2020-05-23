@@ -1,6 +1,6 @@
 kApp.news = {
 	items: [],
-	displayMs: 20 * 1000,
+	displayMs: 30 * 1000,
 
 	init: function() {
 	},
@@ -29,8 +29,12 @@ kApp.news = {
 		if (item.active) {
 			var displayMs = kApp.news.displayMs;
 			var active = (displayMs + item.ms - newMs) / displayMs;
-			kApp.log(active);
-			item.active = Math.max(0, active);  
+			item.active = Math.max(0, active);
 		}
+	},
+	
+	addFleetCreated: function(fleet) {
+		var displaySpeed = fleet.mv.toFixed(2);
+		kApp.news.add(fleet.rcolor, "Created fleet of " + fleet.totalShips + " ships, headed from " + fleet.selectedSystem.name + " to " + fleet.destinationSystem.name + ", at speed " + displaySpeed);
 	}
 };

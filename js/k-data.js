@@ -245,7 +245,7 @@ kApp.data = {
 		h.push("⚔");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Def");
+		h.push("⛨");
 		h.push("</th>");
 		h.push("</tr>");
 		

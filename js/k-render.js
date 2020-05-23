@@ -294,14 +294,14 @@ kApp.render = {
 		var yDelta = 20;
 		for (var i=0; i<kApp.news.items.length; i++) {
 			var item = kApp.news.items[i];
-			if (item.active) {
+			if (item.active > 0.1) {
 				textSize(14);
 				textFont("Calibri");
 				textStyle(ITALIC);
 				var itemColor = color(item.color ? item.color : "(100,220,100)"); 
 				itemColor.setAlpha(Math.round(255 * item.active));
 				fill(itemColor);
-				var t = item.text;
+				var t = item.active + ":" + item.text;
 				text(t, x0, (i * yDelta) + y0);
 			}
 		}

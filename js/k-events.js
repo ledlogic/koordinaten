@@ -100,7 +100,6 @@ kApp.events = {
 			var fleet = kApp.game.currentFleet;
 			fleet.color = selectedSystem.color;
 			fleet.rcolor = kApp.game.getPlayer(fleet.color).rcolor;
-			kApp.log(fleet.rcolor);
 			fleet.selectedSystem = selectedSystem;
 			fleet.destinationSystem = destinationSystem;
 			fleet.startPt = selectedSystem.rPt;
@@ -112,8 +111,7 @@ kApp.events = {
 			fleet.theta = kApp.geom.radians(fleet.startPt, fleet.endPt);
 			fleet.totalShips = totalShips;
 			kApp.game.fleets.push(fleet);
-			
-			kApp.news.add(fleet.rcolor, "Created fleet of " + totalShips + " ships, headed from " + selectedSystem.name + " to " + destinationSystem.name);
+			kApp.news.addFleetCreated(fleet);
 		}
 		
 		// update
