@@ -397,9 +397,6 @@ kApp.render = {
 				textFont("Calibri");
 				textStyle(ITALIC);
 				var itemColor = color(item.color ? item.color : "(100,220,100)");
-				
-				// TODO: experiment with different sigmoid functions here
-				
 				itemColor.setAlpha(Math.round(255 * item.active));
 				fill(itemColor);
 				var t = item.text;

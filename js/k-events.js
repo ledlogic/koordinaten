@@ -4,7 +4,7 @@ kApp.events = {
 	},
 	
 	// user clicked the i-th ship build button for the current selected system
-	build: function() {
+	build: function(e) {
 		var $that = $(this);
 		var i = $that.data("ship-i");
 		if (i == null) {
@@ -22,23 +22,50 @@ kApp.events = {
 		if (bc == null) {
 			return;
 		}
+		var credits = ship.credits;
+		if (credits == null) {
+			return;
+		}
 		var player = kApp.game.getPlayer("red");
 		if (player == null) {
 			return;
 		}
 		
-		player.credits -= ship.credits;
-		var building = system.building[i];
-		var buildingArr = building.split(",");
-		buildingArr[bc-1] = parseInt(buildingArr[bc-1], 10) + 1;
-		system.building[i] = buildingArr.join(",");
+		var shipCount = 0;
+		var creditCount = 0;
+
+		// check modifier keys
+		var altKey = e.altKey;		
+		var shiftKey = e.shiftKey;
 		
-		kApp.data.showPlayers();
-		kApp.data.showSystem(system);
+		if (shiftKey) {
+			shipCount = Math.floor(player.credits / credits);
+		} else if (altKey) {
+			shipCount = 5;
+		} else {
+			shipCount = 1;
+		}
+		
+		shipCount = Math.min(Math.floor(player.credits / credits), shipCount);
+		creditCount = credits * shipCount;
+		
+		if (shipCount) {
+			player.credits -= creditCount;
+			
+			var building = system.building[i];
+			var buildingArr = building.split(",");
+			buildingArr[bc-1] = parseInt(buildingArr[bc-1], 10) + shipCount;
+			system.building[i] = buildingArr.join(",");
+			
+			kApp.news.addBuild(system, ship, shipCount);
+			
+			kApp.data.showPlayers();
+			kApp.data.showSystem(system);
+		}
 	},
 	
-	// user has entered movement state
-	move: function() {
+	// user has changed move amount + / -
+	move: function(e) {
 		var $that = $(this);
 		var i = $that.data("ship-i");
 		if (i == null) {
@@ -60,7 +87,22 @@ kApp.events = {
 		if (change == null) {
 			return;
 		}
-		currentFleet.ships[i] += change;
+		
+		// check modifier keys
+		var altKey = e.altKey;		
+		var shiftKey = e.shiftKey;
+		
+		if (shiftKey && change > 0) {
+			currentFleet.ships[i] = selectedSystem.ships[i];
+		} else if (shiftKey && change < 0) {
+			currentFleet.ships[i] = 0;
+		} else if (altKey) {
+			currentFleet.ships[i] += 5 * change;
+		} else {
+			currentFleet.ships[i] += change;
+		}
+		
+		// check boundaries
 		currentFleet.ships[i] = Math.max(currentFleet.ships[i], 0);
 		currentFleet.ships[i] = Math.min(currentFleet.ships[i], selectedSystem.ships[i]);
 		

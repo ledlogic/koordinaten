@@ -1,6 +1,6 @@
 kApp.news = {
 	items: [],
-	displayMs: 30 * 1000,
+	displayMs: 15 * 1000,
 
 	init: function() {
 	},
@@ -55,8 +55,8 @@ kApp.news = {
 		kApp.news.add(fleet.rcolor, "Created fleet of " + fleet.totalShips + " ships, headed from " + fleet.selectedSystem.name + " to " + fleet.destinationSystem.name + ", at speed " + displaySpeed);
 	},
 	
-	addBuilt: function(fleet) {
-		kApp.news.add(fleet.rcolor, "Created fleet of " + fleet.totalShips + " ships, headed from " + fleet.selectedSystem.name + " to " + fleet.destinationSystem.name + ", at speed " + displaySpeed);
+	addBuild: function(system, ship, shipCount) {
+		kApp.news.add(system.rcolor, "Began construction of " + shipCount + " " + ship.name + (shipCount > 1 ? "s" : "") + " at " + system.name + ", taking " + ship.bc + " turns.");
 	},
 
 	addCredits: function(system, player) {
