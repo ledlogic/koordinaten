@@ -8,7 +8,6 @@ kApp.news = {
 	add: function(color, text) {
 		var that = this;
 		var ms = kApp.date.getMs();
-		var turn = kApp.game.settings.turn;
 		var item = {
 			ms: ms,
 			color: color,
@@ -16,7 +15,8 @@ kApp.news = {
 			active: 1.0
 		}
 		that.items.unshift(item);
-		kApp.log(that.items);
+		kApp.news.checkItemCount();
+		//kApp.log(that.items);
 	},
 	
 	update: function(newMs) {
@@ -31,6 +31,18 @@ kApp.news = {
 			var active = (displayMs + item.ms - newMs) / displayMs;
 			item.active = Math.max(0, active);
 		}
+	},
+	
+	checkItemCount: function() {
+		var activeCount = 0;
+		_.each(kApp.news.items, function(item) {
+			if (item.active) {
+				activeCount++;
+			}
+			if (activeCount > 16) {
+				item.active = 0;
+			}
+		});
 	},
 	
 	addTurn: function() {
