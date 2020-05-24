@@ -101,5 +101,23 @@ kApp.geom = {
 	radians: function(rPt1, rPt2) {
 		var r = Math.atan2(rPt2.y - rPt1.y, rPt2.x - rPt1.x);
 		return r;
+	},
+	
+	radius: function(rPt) {
+		var xSq = Math.pow(rPt.x, 2);
+		var ySq = Math.pow(rPt.y, 2);
+		return Math.sqrt(xSq + ySq);
+	},
+	
+	rTheta2rPt: function(radius, theta) {
+		var x = radius * Math.cos(theta);
+		var y = radius * Math.sin(theta);
+		return new kApp.geom.rPt(x, y);
+	},
+	
+	rPtAdd: function(rPt1, rPt2) {
+		rPt1.x += rPt2.x;
+		rPt1.y += rPt2.y;
 	}
+
 };

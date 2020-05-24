@@ -316,8 +316,7 @@ kApp.game = {
 	
 	newTurn: function() {
 		kApp.log("newTurn");
-		var t = Math.floor(kApp.game.settings.turn);
-		kApp.news.add("", "Game: Turn " + t + " started");
+		kApp.news.addTurn();
 		
 		// increment credits
 		kApp.log("newTurn: increment credits");
@@ -326,11 +325,12 @@ kApp.game = {
 			_.each(kApp.game.systems, function(system) {
 				if (system.color == color) {
 					player.credits += system.credits;
+					kApp.news.addCredits(system, player);
 				}
 			});
 		});
 		kApp.data.showPlayers();
-		
+
 		// build track
 		kApp.log("newTurn: build track");
 		_.each(kApp.game.systems, function(system) {

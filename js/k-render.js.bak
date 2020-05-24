@@ -28,10 +28,9 @@ kApp.render = {
 			blackhole: {
 				type: "blackhole",
 				name: "NGC " + kApp.random.intBetween(4000, 10000),
-				radius: kApp.random.intBetween(15, 30),
+				radius: kApp.random.intBetween(5, 20),
 				rPt: new kApp.geom.rPt(0, 0),
-				starcount: 450,
-				starrange: 500,
+				starcount: 50,
 				stars: []
 			}		
 		}
@@ -40,25 +39,24 @@ kApp.render = {
 	init: function() {
 		kApp.render.settings.moves.init();
 		kApp.render.initPhenomena();
-		kApp.render.settings.phenomena.blackhole.starrange = 1000;
 	},
 	
 	blackholestar: function() {
-		var star = this;
-		kApp.render.resetStar(star);
+		kApp.render.resetStar(this);
 	},
 	
 	resetStar: function(star) {
 		var x = Math.random();
-		var radius = (kApp.render.settings.phenomena.blackhole.starrange - kApp.render.settings.phenomena.blackhole.radius) * Math.pow(x / (1 + x), 2)
-		           + kApp.render.settings.phenomena.blackhole.radius;
-		star.radius = radius;
+		var radius = 240 * (x / (1 + x)) + 10;
+		this.radius = radius;
+		if (star.radius < 10) {
+			kApp.render.resetStar(star);
+		}
 		var theta = kApp.random.theta();
 		star.theta = theta;
 		var rPt = kApp.geom.rTheta2rPt(radius, theta);
-		star.rPt = rPt; 
-		star.intensity = kApp.random.blackholestarIntensity();
-		
+		star.rPt = rPt;
+		star.intensity = 0.75 * Math.random() * 255;
 		kApp.render.updateblackholestar(star);
 	},
 	
@@ -68,11 +66,11 @@ kApp.render = {
 		star.theta = theta;
 		//kApp.log("theta:" + theta);
 
-		var vtheta = theta + 0.5 * Math.PI * 1.1;
+		var vtheta = theta + 0.5 * Math.PI;
 		star.vtheta = vtheta;
 		//kApp.log("vtheta:" + vtheta);
 
-		var v = Math.pow(1/star.radius,2) * 100;
+		var v = star.radius * 0.01;
 		star.v = v;
 		//kApp.log("v:" + v);
 
@@ -84,7 +82,7 @@ kApp.render = {
 		
 		var radius = kApp.geom.radius(star.rPt);
 		star.radius = radius;
-		if (star.radius < kApp.render.settings.phenomena.blackhole.radius) {
+		if (star.radius < 10) {
 			kApp.render.resetStar(star);
 		}
 	},
@@ -107,10 +105,6 @@ kApp.render = {
 		
 		var y = kApp.geom.map.crect.height - 10;
 		text("FPS: " + fps.toFixed(0), 10, y);
-	},
-	
-	bg: function() {
-		background(30,30,30);
 	},
 	
 	grid: function() {
@@ -366,7 +360,7 @@ kApp.render = {
 					
 					// black hole
 					var cpt = kApp.geom.rPt2Cpt(phenomena.rPt.x, phenomena.rPt.y);
-					fill(30,30,30);
+					fill(0);
 					noStroke();
 					var cRadius = kApp.geom.dimR2C(phenomena.radius * 1.0);
 					circle(cpt.x, cpt.y, cRadius);

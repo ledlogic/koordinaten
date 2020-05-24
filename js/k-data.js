@@ -67,7 +67,7 @@ kApp.data = {
 		h.push("Player");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("Credits (¤)");
+		h.push("Credits (" + kApp.symbols.credits + ")");
 		h.push("</th>");
 		h.push("</tr>");
 		
@@ -110,10 +110,10 @@ kApp.data = {
 		h.push("<th>Owner</th><td class=\"k-system-owner k-color-" + color + "\">" + player.name + "</td>");
 		h.push("</tr>");
 		h.push("<tr>");
-		h.push("<th>Defense (⛨)</th><td class=\"k-system-defense\">" + defense + "</td>");
+		h.push("<th>Defense (" + kApp.symbols.defense + ")</th><td class=\"k-system-defense\">" + defense + "</td>");
 		h.push("</tr>");
 		h.push("<tr>");
-		h.push("<th>Income (¤/Turn)</th><td class=\"k-system-credits\">" + credits + "</td>");
+		h.push("<th>Income (" + kApp.symbols.credits + "/Turn)</th><td class=\"k-system-credits\">" + credits + "</td>");
 		h.push("</tr>");
 		h.push("</table>");
 		$("#k-system-data").html(h.join(""));
@@ -132,19 +132,19 @@ kApp.data = {
 		h.push("Type");
 		h.push("</th>");
 		h.push("<th>");
-		h.push("⚔");
+		h.push(kApp.symbols.attack);
 		h.push("</th>");
 		h.push("<th>");
-		h.push("⛨");
+		h.push(kApp.symbols.defense);
 		h.push("</th>");
 		h.push("<th>");
-		h.push("✈");
+		h.push(kApp.symbols.movement);
 		h.push("</th>");
 		h.push("<th>");
-		h.push("¤");
+		h.push(kApp.symbols.credits);
 		h.push("</th>");
 		h.push("<th>");
-		h.push("🛠");
+		h.push(kApp.symbols.build);
 		h.push("</th>");
 		h.push("</tr>");
 		

@@ -3,11 +3,12 @@ function setup() {
 }
 
 function draw() {
-	background(30,30,30);
+	kApp.render.bg();
 	//kApp.render.nebula();
 	kApp.render.stars();
 	kApp.render.moves();
 	kApp.render.systems();
+	kApp.render.phenomena();
 	kApp.render.grid();
 	kApp.render.fleets();
 	kApp.render.fps();
