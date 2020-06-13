@@ -5,12 +5,12 @@ kApp.news = {
 	init: function() {
 	},
 	
-	add: function(color, text) {
+	add: function(team, text) {
 		var that = this;
 		var ms = kApp.date.getMs();
 		var item = {
 			ms: ms,
-			color: color,
+			team: team,
 			text: text,
 			active: 1.0
 		}

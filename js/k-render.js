@@ -262,7 +262,7 @@ kApp.render = {
 	
 	systemFill: function(s) {
 		// interior
-		if (s.color === "blue") {
+		if (s.team === "blue") {
 			fill(100, 110, 200);
 		} else {
 			fill(200, 110, 100);
@@ -271,7 +271,7 @@ kApp.render = {
 	
 	systemStroke: function(s) {
 		// interior
-		if (s.color === "blue") {
+		if (s.team === "blue") {
 			stroke(100, 110, 200);
 		} else {
 			stroke(200, 110, 100);
@@ -303,7 +303,7 @@ kApp.render = {
 			textFont("Calibri");
 			textStyle(NORMAL);
 			var dist = kApp.geom.rdist(selected.rPt, destination.rPt);
-			var symbol = (selected.color == destination.color) ? kApp.symbols.defense : kApp.symbols.attack;
+			var symbol = (selected.team == destination.team) ? kApp.symbols.defense : kApp.symbols.attack;
 			var t = symbol + " " + Math.round(dist) + " ps";
 			var midPt = kApp.geom.rPtBetween(selected.rPt, destination.rPt, 0.5);
 			var tPt = kApp.geom.rPt2Cpt(midPt);
@@ -396,7 +396,7 @@ kApp.render = {
 				textSize(14);
 				textFont("Calibri");
 				textStyle(ITALIC);
-				var itemColor = color(item.color ? item.color : "(100,220,100)");
+				var itemColor = color(item.team ? item.team : "(100,220,100)");
 				itemColor.setAlpha(Math.round(255 * item.active));
 				fill(itemColor);
 				var t = item.text;

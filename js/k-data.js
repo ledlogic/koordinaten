@@ -73,16 +73,17 @@ kApp.data = {
 		
 		for (var i=0; i<kApp.game.players.length;i++) {
 			var name = kApp.game.players[i].name;
-			var color = kApp.game.players[i].color;
+			var team = kApp.game.players[i].team;
+			kApp.log("team[" + team + "]");
 			var credits = kApp.game.players[i].credits;
 			var creditDisplay = credits;
 
 			h.push("<tr>");
-			h.push("<td class=\"k-player-name k-color-" + color + "\">");
+			h.push("<td class=\"k-player-name k-team-" + team + "\">");
 			h.push(name);
 			h.push("</td>");
 			
-			h.push("<td class=\"k-ships-credits k-color-" + color + "\">");
+			h.push("<td class=\"k-ships-credits k-team-" + team + "\">");
 			h.push(creditDisplay);
 			h.push("</td>");
 			h.push("</tr>");
@@ -98,16 +99,16 @@ kApp.data = {
 			s = kApp.game.getSelectedSystem();
 		}
 		
-		var player = kApp.game.getPlayer(s.color);
+		var player = kApp.game.getPlayer(s.team);
 		var defense = s.ships[5];
 		var credits = s.credits;
-		var color = s.color;
+		var team = s.team;
 		var human = player.type == "HUMAN";
 		
 		var h = [];
 		h.push("<table id=\"k-system-data-table\">");
 		h.push("<tr>");
-		h.push("<th>Owner</th><td class=\"k-system-owner k-color-" + color + "\">" + player.name + "</td>");
+		h.push("<th>Owner</th><td class=\"k-system-owner k-team-" + team + "\">" + player.name + "</td>");
 		h.push("</tr>");
 		h.push("<tr>");
 		h.push("<th>Defense (" + kApp.symbols.defense + ")</th><td class=\"k-system-defense\">" + defense + "</td>");
@@ -225,10 +226,10 @@ kApp.data = {
 		var h = [];
 		h.push("<table id=\"k-move-data-table\">");
 		h.push("<tr>");
-		h.push("<th>From</th><td class=\"k-move-from k-color-" + selectedSystem.color + "\">" + selectedSystem.name+ "</td>");
+		h.push("<th>From</th><td class=\"k-move-from k-team-" + selectedSystem.team + "\">" + selectedSystem.name+ "</td>");
 		h.push("</tr>");
 		h.push("<tr>");
-		h.push("<th>To</th><td class=\"k-move-to k-color-" + destinationSystem.color + "\">" + destinationSystem.name + "</td>");
+		h.push("<th>To</th><td class=\"k-move-to k-team-" + destinationSystem.team + "\">" + destinationSystem.name + "</td>");
 		h.push("</tr>");
 		h.push("</table>");
 		

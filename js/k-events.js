@@ -140,8 +140,8 @@ kApp.events = {
 		if (totalShips) {
 			// build up current fleet stats		
 			var fleet = kApp.game.currentFleet;
-			fleet.color = selectedSystem.color;
-			fleet.rcolor = kApp.game.getPlayer(fleet.color).rcolor;
+			fleet.team = selectedSystem.team;
+			fleet.rcolor = kApp.game.getPlayer(fleet.team).rcolor;
 			fleet.selectedSystem = selectedSystem;
 			fleet.destinationSystem = destinationSystem;
 			fleet.startPt = selectedSystem.rPt;

@@ -122,11 +122,11 @@ footer {
 	overflow-y: auto;
 }
 
-.k-color-blue {
-	color:rgb(100, 110, 200);
+.k-team-blue {
+	color: rgb(100, 110, 200);
 }
-.k-color-red {
-	color:rgb(200, 110, 100);
+.k-team-red {
+	color: rgb(200, 110, 100);
 }
 .k-data-button {
 	background: transparent;

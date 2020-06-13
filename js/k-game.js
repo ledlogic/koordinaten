@@ -14,16 +14,16 @@ kApp.game = {
 	    {
 	    	name: "AI",
 	    	type: "AI",
-	        color: "blue",
-	        rcolor: "rgb(100, 110, 200)",
-	        credits: 0
+	        team: "blue",
+	        credits: 0,
+	        rcolor: "rgb(100, 110, 200)"
 	    },
 	    {
 	    	name: "Human",
 	    	type: "HUMAN",
-	        color: "red",
-	        rcolor: "rgb(200, 110, 100)",
-	        credits: 0 
+	    	team: "red",
+	        credits: 0,
+	        rcolor: "rgb(200, 110, 100)"
 	    }
 	],
 	ships: [
@@ -87,7 +87,7 @@ kApp.game = {
 		    "name": "Terra",
 			rPt: new kApp.geom.rPt(-370, 0),
 			radius: 5,
-			color: "blue",
+			team: "blue",
 			ships: [2, 1, 2, 0, 1, 16],
 			credits: 9
 		},
@@ -95,7 +95,7 @@ kApp.game = {
 		    "name": "Omega",
 			rPt: new kApp.geom.rPt(-182.5, 110),
 			radius: 5,
-			color: "blue",
+			team: "blue",
 			ships: [4, 0, 1, 0, 1, 14],
 			credits: 7
 		},
@@ -103,7 +103,7 @@ kApp.game = {
 		    "name": "Beta",
 		    rPt: new kApp.geom.rPt(-182.5, -110),
 			radius: 5,
-			color: "blue",
+			team: "blue",
 			ships: [3, 2, 2, 0, 1, 12],
 			credits: 6
 		},
@@ -111,7 +111,7 @@ kApp.game = {
 		    "name": "Ares",
 		    rPt: new kApp.geom.rPt(130, 177.5),
 			radius: 5,
-			color: "red",
+			team: "red",
 			ships: [3, 1, 1, 1, 0, 8],
 			credits: 5
 		},
@@ -119,7 +119,7 @@ kApp.game = {
 		    "name": "Pacifica",
 		    rPt: new kApp.geom.rPt(385, 252.5),
 			radius: 5,
-			color: "red",
+			team: "red",
 			ships: [1, 0, 2, 1, 0, 6],
 			credits: 4
 		},
@@ -127,7 +127,7 @@ kApp.game = {
 		    "name": "Concordia",
 		    rPt: new kApp.geom.rPt(285, -5),
 			radius: 5,
-			color: "red",
+			team: "red",
 			ships: [2, 1, 1, 0, 1, 10],
 			credits: 6
 		},
@@ -135,7 +135,7 @@ kApp.game = {
 		    "name": "Itlantia",
 		    rPt: new kApp.geom.rPt(290, -115),
 			radius: 5,
-			color: "red",
+			team: "red",
 			ships: [1, 0, 1, 0, 0, 8],
 			credits: 5
 		},
@@ -143,7 +143,7 @@ kApp.game = {
 		    "name": "Herme",
 		    rPt: new kApp.geom.rPt(30, -190),
 			radius: 5,
-			color: "red",
+			team: "red",
 			ships: [2, 1, 1, 0, 0, 8],
 			credits: 5
 		}
@@ -175,7 +175,7 @@ kApp.game = {
 	
 	resetCurrentFleet: function() {
 		kApp.game.currentFleet = {
-			color: null,
+			team: null,
 			system: null,
 			destination: null,
 			ships: [],
@@ -203,9 +203,9 @@ kApp.game = {
 		return ret;
 	},
 	
-	getPlayer: function(color) {
+	getPlayer: function(team) {
 		var ret = _.find(kApp.game.players, function(player) {
-			return player.color == color;
+			return player.team == team;
 		});
 		return ret;
 	},
@@ -332,17 +332,15 @@ kApp.game = {
 		// stop time
 		kApp.game.settings.paused = true;
 		
-		// add fleets to the destination system
-		kApp.log("fleets");
-		
-		// which systems have are battles?
-		kApp.log("battles");
-		
 		// resolve battles at systems
-		kApp.log("resolve battles");
+		kApp.game.resolveBattles();
 		
 		// start new turn / restart time
-		setTimeout("kApp.game.start()",1000);
+		//setTimeout("kApp.game.start()",1000);
+	},
+	
+	resolveBattles: function() {
+		kApp.log("resolveBattles");
 	},
 	
 	newTurn: function() {
@@ -352,9 +350,9 @@ kApp.game = {
 		// increment credits
 		kApp.log("newTurn: increment credits");
 		_.each(kApp.game.players, function(player) {
-			var color = player.color;
+			var team = player.team;
 			_.each(kApp.game.systems, function(system) {
-				if (system.color == color) {
+				if (system.team == team) {
 					player.credits += system.credits;
 					kApp.news.addCredits(system, player);
 				}
