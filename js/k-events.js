@@ -196,8 +196,8 @@ kApp.events = {
 				var rPt2 = system.rPt;
 				var intersections = kApp.geom.findrPtCircleLineIntersections(r, rPt0, rPt1, rPt2);
 				var isSafe = intersections.length == 0; 
-				kApp.log("intersections[" + intersections + "]");
-				kApp.log("isSafe[" + isSafe + "]");
+				//kApp.log("intersections[" + intersections + "]");
+				//kApp.log("isSafe[" + isSafe + "]");
 				if (isSafe) {
 					kApp.game.setDestinationSystem(system);
 					kApp.data.showMove();

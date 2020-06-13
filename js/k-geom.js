@@ -171,7 +171,7 @@ kApp.geom = {
 	// line point 1: rPt1
 	// line point 2: rPt2
 	findrPtCircleLineIntersections: function(r, rPt0, rPt1, rPt2) {
-		kApp.log("findrPtCircleLineIntersections, r[" + r + "], rPt0[" + rPt0 + "], rPt1[" + rPt1 + "], rPt2[" + rPt2 + "]");
+		//kApp.log("findrPtCircleLineIntersections, r[" + r + "], rPt0[" + rPt0 + "], rPt1[" + rPt1 + "], rPt2[" + rPt2 + "]");
 		
 		var mb = kApp.geom.rPtsTomb(rPt1, rPt2);
 		return kApp.geom.findCircleLineIntersections(r, rPt0.x, rPt0.y, mb.m, mb.b);

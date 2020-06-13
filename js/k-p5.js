@@ -4,17 +4,22 @@ function setup() {
 
 function draw() {
 	kApp.render.bg();
-	//kApp.render.nebula();
-	kApp.render.stars();
-	kApp.render.moves();
-	kApp.render.systems();
-	kApp.render.phenomena();
-	kApp.render.grid();
-	kApp.render.fleets();
-	kApp.render.fps();
-	kApp.render.news();
-	kApp.sprites.update();
-	kApp.game.update();
+	
+	if (kApp.game.settings.paused) {
+		
+	} else {
+		//kApp.render.nebula();
+		kApp.render.stars();
+		kApp.render.moves();
+		kApp.render.systems();
+		kApp.render.phenomena();
+		kApp.render.grid();
+		kApp.render.fleets();
+		kApp.render.fps();
+		kApp.render.news();
+		kApp.sprites.update();
+		kApp.game.update();
+	}	
 }
 
 function checkBoundaries() {

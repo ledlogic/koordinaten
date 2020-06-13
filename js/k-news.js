@@ -50,6 +50,11 @@ kApp.news = {
 		kApp.news.add("", "Game: Turn " + t + " started");
 	},
 	
+	endTurn: function() {
+		var t = Math.floor(kApp.game.settings.turn);
+		kApp.news.add("", "Game: Turn " + t + " ended");
+	},
+	
 	addFleetCreated: function(fleet) {
 		var displaySpeed = fleet.mv.toFixed(2);
 		kApp.news.add(fleet.rcolor, "Created fleet of " + fleet.totalShips + " ships, headed from " + fleet.selectedSystem.name + " to " + fleet.destinationSystem.name + ", at speed " + displaySpeed);

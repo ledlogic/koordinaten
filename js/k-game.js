@@ -7,7 +7,8 @@ kApp.game = {
 		minTurnRatePerMs: 0.00000625,   // about 100 deltas/second
 		lastCheckMs: 0,
 		spacetime: 100,
-		started: false
+		started: false,
+		paused: false
 	},
 	players: [
 	    {
@@ -163,6 +164,7 @@ kApp.game = {
 	
 	start: function() {
 		kApp.game.settings.started = true;
+		kApp.game.settings.paused = false;
 		var newMs = kApp.date.getMs();
 		kApp.game.settings.lastCheckMs = newMs;
 		kApp.data.showGame();
@@ -267,6 +269,9 @@ kApp.game = {
 		if (!kApp.game.settings.started) {
 			return;
 		}
+		if (kApp.game.settings.paused) {
+			return;
+		}
 		
 		var turn = kApp.game.settings.turn;
 		var newMs = kApp.date.getMs();
@@ -276,6 +281,11 @@ kApp.game = {
 		if (newMs > lastCheckMs) {
 			// update turn data
 			kApp.game.settings.turn += (newMs - lastCheckMs) * turnRatePerMs;
+			
+			// prevent from skipping too far past turn boundary!
+			var turnFloor = Math.floor(turn);
+			kApp.game.settings.turn = Math.min(turnFloor + 1, kApp.game.settings.turn);
+			
 			kApp.game.settings.lastCheckMs = newMs;
 			kApp.data.updateGame();
 			
@@ -308,10 +318,31 @@ kApp.game = {
 			}
 				
 			// check for new game turn
-			if (Math.floor(kApp.game.settings.turn) - Math.floor(turn) >= 1) {
-				kApp.game.newTurn();
+			if (Math.floor(kApp.game.settings.turn) - turnFloor >= 1) {
+				kApp.game.endTurn();
+				//kApp.game.newTurn();
 			}
 		}
+	},
+	
+	endTurn: function() {
+		kApp.log("endTurn");
+		kApp.news.endTurn();
+		
+		// stop time
+		kApp.game.settings.paused = true;
+		
+		// add fleets to the destination system
+		kApp.log("fleets");
+		
+		// which systems have are battles?
+		kApp.log("battles");
+		
+		// resolve battles at systems
+		kApp.log("resolve battles");
+		
+		// start new turn / restart time
+		setTimeout("kApp.game.start()",1000);
 	},
 	
 	newTurn: function() {
@@ -353,6 +384,6 @@ kApp.game = {
 		// artificial intelligence
 		kApp.log("newTurn: ai");
 		kApp.ai.build();
-		kApp.ai.attack();		
+		kApp.ai.attack();
 	}
 };
