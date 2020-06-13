@@ -345,21 +345,20 @@ kApp.game = {
 			var destinationTeam = destinationSystem.team;
 			var ships = fleet.ships;
 			var isFriendly = (fleetTeam == destinationTeam)
-			kApp.log("fleet.ships[" + fleet.ships + "]");
-			kApp.log("destinationSystem.ships[" + destinationSystem.ships + "]");
-			kApp.log("destinationSystem.otherShips[fleetTeam][" + destinationSystem.otherShips[fleetTeam] + "]");
+			//kApp.log("fleet.ships[" + fleet.ships + "]");
 			if (isFriendly) {
+				//kApp.log("destinationSystem.ships[" + destinationSystem.ships + "]");
 				for (var i=0;i<fleet.ships.length;i++) {
 					destinationSystem.ships[i] += fleet.ships[i];
 				}
+				//kApp.log("destinationSystem.ships[" + destinationSystem.ships + "]");
 			} else {
+				//kApp.log("destinationSystem.otherShips[fleetTeam][" + destinationSystem.otherShips[fleetTeam] + "]");
 				for (var i=0;i<fleet.ships.length;i++) {
 					destinationSystem.otherShips[fleetTeam][i] += fleet.ships[i];
 				}
+				//kApp.log("destinationSystem.otherShips[fleetTeam][" + destinationSystem.otherShips[fleetTeam] + "]");
 			}			
-			kApp.log("destinationSystem.ships[" + destinationSystem.ships + "]");
-			kApp.log("destinationSystem.otherShips[fleetTeam][" + destinationSystem.otherShips[fleetTeam] + "]");
-
 			kApp.news.addFleetArrives(fleet);		
 		});		
 	},
