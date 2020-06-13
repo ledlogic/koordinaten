@@ -157,9 +157,19 @@ kApp.game = {
 			system.selected = false;
 			system.destinationCount = 0;
 			system.building = [time, time, time, time, time, time, time];
-			system.enemyShips = [0, 0, 0, 0, 0, 0];
+			system.otherShips = kApp.game.buildotherTeamShips(system);
 		});
 		kApp.game.resetCurrentFleet();
+	},
+	
+	buildotherTeamShips: function(system) {
+		var ret = {}; 
+		_.each(kApp.game.players, function(player) {
+			if (system.team != player.team) {
+				ret[player.team] = [0, 0, 0, 0, 0, 0];
+			}
+		});
+		return ret;
 	},
 	
 	start: function() {
@@ -306,7 +316,7 @@ kApp.game = {
 				fleet.ratio = ratio;
 				var rPt = kApp.geom.rPtBetween(fleet.startPt, fleet.endPt, ratio);
 				fleet.rPt = rPt;		
-				kApp.log("ratio[" + ratio + "], dist[" + dist + "], startPt[" + fleet.startPt + "], endPt[" + fleet.endPt + "], rPt[" + rPt + "]");
+				//kApp.log("ratio[" + ratio + "], dist[" + dist + "], startPt[" + fleet.startPt + "], endPt[" + fleet.endPt + "], rPt[" + rPt + "]");
 				if (ratio == 1.0) {
 					arrivedFleets.push(fleet);
 				} else {
@@ -316,6 +326,9 @@ kApp.game = {
 			if (arrivedFleets.length) {
 				kApp.game.fleets = newFleets;
 			}
+			
+			// merge arrive fleets
+			kApp.game.mergeFleets(arrivedFleets);
 				
 			// check for new game turn
 			if (Math.floor(kApp.game.settings.turn) - turnFloor >= 1) {
@@ -323,6 +336,32 @@ kApp.game = {
 				//kApp.game.newTurn();
 			}
 		}
+	},
+	
+	mergeFleets: function(arrivedFleets) {
+		_.each(arrivedFleets, function(fleet) {
+			var fleetTeam = fleet.team;
+			var destinationSystem = fleet.destinationSystem;
+			var destinationTeam = destinationSystem.team;
+			var ships = fleet.ships;
+			var isFriendly = (fleetTeam == destinationTeam)
+			kApp.log("fleet.ships[" + fleet.ships + "]");
+			kApp.log("destinationSystem.ships[" + destinationSystem.ships + "]");
+			kApp.log("destinationSystem.otherShips[fleetTeam][" + destinationSystem.otherShips[fleetTeam] + "]");
+			if (isFriendly) {
+				for (var i=0;i<fleet.ships.length;i++) {
+					destinationSystem.ships[i] += fleet.ships[i];
+				}
+			} else {
+				for (var i=0;i<fleet.ships.length;i++) {
+					destinationSystem.otherShips[fleetTeam][i] += fleet.ships[i];
+				}
+			}			
+			kApp.log("destinationSystem.ships[" + destinationSystem.ships + "]");
+			kApp.log("destinationSystem.otherShips[fleetTeam][" + destinationSystem.otherShips[fleetTeam] + "]");
+
+			kApp.news.addFleetArrives(fleet);		
+		});		
 	},
 	
 	endTurn: function() {
@@ -336,7 +375,7 @@ kApp.game = {
 		kApp.game.resolveBattles();
 		
 		// start new turn / restart time
-		//setTimeout("kApp.game.start()",1000);
+		setTimeout("kApp.game.start()", 5000);
 	},
 	
 	resolveBattles: function() {

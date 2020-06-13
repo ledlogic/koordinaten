@@ -66,5 +66,10 @@ kApp.news = {
 
 	addCredits: function(system, player) {
 		kApp.news.add(player.rcolor, "System " + system.name + " generated " + system.credits + " to " + player.name + ".");
+	},
+	
+	addFleetArrives: function(fleet) {
+		kApp.news.add(fleet.rcolor, "Fleet of " + fleet.totalShips + " ships, from " + fleet.selectedSystem.name + ", arrived at " + fleet.destinationSystem.name + ".");
 	}
+
 };
