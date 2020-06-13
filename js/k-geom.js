@@ -118,6 +118,68 @@ kApp.geom = {
 	rPtAdd: function(rPt1, rPt2) {
 		rPt1.x += rPt2.x;
 		rPt1.y += rPt2.y;
+	},
+	
+	// @see https://cscheng.info/2016/06/09/calculate-circle-line-intersection-with-javascript-and-p5js.html
+	findCircleLineIntersections: function(r, x0, y0, m, b0) {
+	    // circle: (x - x0)^2 + (y - y0)^2 = r^2
+	    // line: y = m * x + b0
+	    // r: circle radius
+	    // x0: x value of circle centre
+	    // y0: y value of circle centre
+	    // m: slope
+	    // b0: y-intercept
+
+	    // get a, b, c values
+	    var a = 1 + sq(m);
+	    var b = -x0 * 2 + (m * (b0 - x0)) * 2;
+	    var c = sq(x0) + sq(b0 - y0) - sq(r);
+
+	    // get discriminant
+	    var d = sq(b) - 4 * a * c;
+	    if (d >= 0) {
+	        // insert into quadratic formula
+	        var intersections = [
+	            (-b + sqrt(sq(b) - 4 * a * c)) / (2 * a),
+	            (-b - sqrt(sq(b) - 4 * a * c)) / (2 * a)
+	        ];
+	        if (d == 0) {
+	            // only 1 intersection
+	            return [intersections[0]];
+	        }
+	        return intersections;
+	    }
+	    // no intersection
+	    return [];
+	},
+	
+	rPtsDelta: function(rPt1, rPt2) {
+		var rPt = new kApp.geom.rPt(rPt2.x - rPt1.x, rPt2.y - rPt1.y);
+		return rPt;
+	},
+	
+	rPtsTomb: function(rPt1, rPt2) {
+		var rPt = kApp.geom.rPtsDelta(rPt1, rPt2);
+		var ret = {
+			m: rPt.y / rPt.x,
+		};
+		ret.b = rPt1.y - ret.m * rPt1.x;
+		return ret;
+	},
+	
+	// circle center: rPt0
+	// line point 1: rPt1
+	// line point 2: rPt2
+	findrPtCircleLineIntersections: function(r, rPt0, rPt1, rPt2) {
+		kApp.log("findrPtCircleLineIntersections, r[" + r + "], rPt0[" + rPt0 + "], rPt1[" + rPt1 + "], rPt2[" + rPt2 + "]");
+		
+		var mb = kApp.geom.rPtsTomb(rPt1, rPt2);
+		return kApp.geom.findCircleLineIntersections(r, rPt0.x, rPt0.y, mb.m, mb.b);
+	},
+	
+	geoMean: function(x1, x2) {
+		var ret = Math.sqrt(x1 * x1 + x2 * x2);
+		return ret;
 	}
 
 };

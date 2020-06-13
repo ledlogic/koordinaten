@@ -189,8 +189,19 @@ kApp.events = {
 			if (!system) {
 				kApp.game.clearDestinationSystems();
 			} else if (system != selectedSystem && !system.destination) {
-				kApp.game.setDestinationSystem(system);
-				kApp.data.showMove();
+				var radius = kApp.render.settings.phenomena.blackhole.radius;
+				var r = radius * 3;
+				var rPt0 = kApp.render.settings.phenomena.blackhole.rPt;
+				var rPt1 = selectedSystem.rPt;
+				var rPt2 = system.rPt;
+				var intersections = kApp.geom.findrPtCircleLineIntersections(r, rPt0, rPt1, rPt2);
+				var isSafe = intersections.length == 0; 
+				kApp.log("intersections[" + intersections + "]");
+				kApp.log("isSafe[" + isSafe + "]");
+				if (isSafe) {
+					kApp.game.setDestinationSystem(system);
+					kApp.data.showMove();
+				}
 			}
 		}
 	},
