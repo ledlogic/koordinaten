@@ -1,6 +1,7 @@
 kApp.news = {
 	items: [],
 	displayMs: 15 * 1000,
+	maxDisplay: 16,
 
 	init: function() {
 	},
@@ -39,7 +40,7 @@ kApp.news = {
 			if (item.active) {
 				activeCount++;
 			}
-			if (activeCount > 16) {
+			if (activeCount > kApp.news.maxDisplay) {
 				item.active = 0;
 			}
 		});
@@ -70,6 +71,13 @@ kApp.news = {
 	
 	addFleetArrives: function(fleet) {
 		kApp.news.add(fleet.rcolor, "Fleet of " + fleet.totalShips + " ships, from " + fleet.selectedSystem.name + ", arrived at " + fleet.destinationSystem.name + ".");
+	},
+	
+	addSystemGrowth: function(system, cdelta, cnew) {
+		var player = kApp.game.getPlayer(system.team);
+		var rcolor = player.rcolor;
+		kApp.news.add(rcolor, "System " + system.name + ", has increased defense by " + cdelta + ", to " + cnew + ".");
 	}
+
 
 };

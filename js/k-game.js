@@ -158,6 +158,7 @@ kApp.game = {
 			system.destinationCount = 0;
 			system.building = [time, time, time, time, time, time, time];
 			system.otherShips = kApp.game.buildotherTeamShips(system);
+			system.logisticGrowthModel = kApp.game.initialSystemLogisticGrowthModel(system);
 		});
 		kApp.game.resetCurrentFleet();
 	},
@@ -395,6 +396,9 @@ kApp.game = {
 		// resolve battles at systems
 		kApp.game.resolveBattles();
 		
+		// update population
+		kApp.game.logisticGrowthCalc();
+		
 		// start new turn / restart time
 		setTimeout("kApp.game.start()", 5000);
 	},
@@ -443,5 +447,47 @@ kApp.game = {
 		kApp.log("newTurn: ai");
 		kApp.ai.build();
 		kApp.ai.attack();
+	},
+
+	// @see https://codesandbox.io/s/function-plot-jxudi?file=/src/index.js
+	initialSystemLogisticGrowthModel: function(system) {
+		kApp.log("system.name[" + system.name + "]");
+		var c0 = system.ships[system.ships.length-1];
+		kApp.log("c0[" + c0 + "]");
+		var c = c0 + Math.random() * 10.0 + 5.0;
+		kApp.log("c[" + c + "]");
+		var b = Math.random() * 0.3 + 0.2;
+		kApp.log("b[" + b + "]");
+		//var a = Math.exp(b + 10.0);
+		var a = c / c0 - 1.0;
+		kApp.log("a[" + a + "]");
+		system.lgm = {
+			c0: c0,
+			a: a,
+			b: b,
+			c: c
+		};
+	},
+	
+	systemLogisticGrowthCalc: function(system) {
+		var cstart = system.ships[system.ships.length-1];
+		
+		var c0 = system.lgm.c0
+		var x = (kApp.game.settings.turn - 1.0);
+		var y = system.lgm.c / ( 1 + system.lgm.a * Math.exp(-system.lgm.b * x));
+		var cdelta = Math.floor(y-cstart);
+		var cnew = cstart + cdelta;
+		kApp.log("c0[" + c0 + "], cstart[" + cstart + "], cdelta[" + cdelta + "], cnew[" + cnew + "], x[" + x + "], y[" + y + "]");
+		
+		if (cdelta) {
+			system.ships[system.ships.length-1] = cnew;
+			kApp.news.addSystemGrowth(system, cdelta, cnew);
+		}
+	},
+	
+	logisticGrowthCalc: function() {
+		_.each(kApp.game.systems, function(system) {
+			kApp.game.systemLogisticGrowthCalc(system);
+		});
 	}
 };
