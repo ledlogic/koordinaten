@@ -72,12 +72,23 @@ kApp.news = {
 	addFleetArrives: function(fleet) {
 		kApp.news.add(fleet.rcolor, "Fleet of " + fleet.totalShips + " ships, from " + fleet.selectedSystem.name + ", arrived at " + fleet.destinationSystem.name + ".");
 	},
-	
 	addSystemGrowth: function(system, cdelta, cnew) {
 		var player = kApp.game.getPlayer(system.team);
 		var rcolor = player.rcolor;
 		kApp.news.add(rcolor, "System " + system.name + ", has increased defense by " + cdelta + ", to " + cnew + ".");
+	},
+	addDefenseShipsDest: function(system, defenseShipsDest) {
+		var lostShips = kApp.game.shipsToDescription(defenseShipsDest);
+		
+		var player = kApp.game.getPlayer(system.team);
+		var rcolor = player.rcolor;
+		kApp.news.add(rcolor, "Ships were lost defending " + system.name + ": " + lostShips + ".");
+	},
+	addAttackerShipsDest: function(system, team, attackShipsDest) {
+		var lostShips = kApp.game.shipsToDescription(attackShipsDest);
+		
+		var player = kApp.game.getPlayer(team);
+		var rcolor = player.rcolor;
+		kApp.news.add(rcolor, "Ships of team, " + team  + ", were lost defending " + system.name + ": " + lostShips + ".");
 	}
-
-
 };

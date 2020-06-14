@@ -272,19 +272,13 @@ kApp.game = {
 		var ret = {};
 		
 		// system ships
-		var count = 0;
-		for (var i=0; i<s.ships.length - 1;i++) {
-			count += s.ships[i];
-		}		
+		var count = kApp.game.shipCount(s.ships, 1);
 		ret[s.team] = count;
-		
+
 		// team ships
 		_.map(s.otherShips, function (ships, team) {
-			var count = 0;
-			for (var i=0; i<ships.length - 1;i++) {
-				count += ships[i];
-			}		
-		    ret[team] = count;
+			var count = kApp.game.shipCount(ships, 0);
+			ret[team] = count;
 		});		
 		
 		return ret;
@@ -405,6 +399,71 @@ kApp.game = {
 	
 	resolveBattles: function() {
 		kApp.log("resolveBattles");
+
+		_.each(kApp.game.systems, function(system) {
+			var dv = 0;
+			for (var i=0;i<system.ships.length - 1;i++) {
+				var q = system.ships[i];
+				var d = kApp.game.ships[i].dv;
+				dv += q * d;
+			}
+			var av = 0;
+			_.map(system.otherShips, function(otherShips, team) {
+				for (var i=0;i<otherShips.length;i++) {
+					var q = otherShips[i];
+					var a = kApp.game.ships[i].av;
+					av += q * a;
+				}
+			});
+			
+			kApp.log("system.name[" + system.name + "]");			
+			kApp.log("dv[" + dv + "], av[" + av + "]");			
+			
+			// attacking ships
+			if (av > 0) {
+				var defenseShipsDest = [];
+				for (var i=0;i<system.ships.length - 1;i++) {
+					var q = system.ships[i];
+					var d = kApp.game.ships[i].dv;
+					defenseShipsDest[i] = Math.min(Math.floor(av / d), q);
+					av -= defenseShipsDest[i] * d;
+					if (defenseShipsDest[i] > 0) {
+						system.ships[i] -= defenseShipsDest[i];
+					}
+				}
+				var count = kApp.game.shipCount(defenseShipsDest, 0);
+				kApp.log("defenseShipsDest[" + defenseShipsDest + "], count[" + count + "]");
+				if (count) {
+					kApp.news.addDefenseShipsDest(system, defenseShipsDest);
+				}
+			}
+			
+			// defending ships
+			if (dv > 0) {
+				_.map(system.otherShips, function(otherShips, team) {
+					var attackShipsDest = [];
+					for (var i=0;i<otherShips.length - 1;i++) {
+						var q = otherShips[i];
+						var d = kApp.game.ships[i].dv;
+						attackShipsDest[i] = Math.min(Math.floor(dv / d), q);
+						dv -= attackShipsDest[i] * d;
+						if (attackShipsDest[i] > 0) {
+							otherShips[i] -= attackShipsDest[i];
+						}
+					}
+					var count = kApp.game.shipCount(attackShipsDest, 0);
+					kApp.log("attackShipsDest[" + attackShipsDest + "], count[" + count + "]");
+					if (count) {
+						kApp.news.addAttackerShipsDest(system, team, attackShipsDest);
+					}	
+				});
+			}			
+			
+			// conquer mode
+			if (dv == 0) {
+				
+			}
+		});
 	},
 	
 	newTurn: function() {
@@ -489,5 +548,36 @@ kApp.game = {
 		_.each(kApp.game.systems, function(system) {
 			kApp.game.systemLogisticGrowthCalc(system);
 		});
-	}
+	},
+	
+	// if count exists for ship type, adds to a human-readable string
+	shipsToDescription: function(ships) {
+		var ret = [];
+		for (var i=0; i<ships.length;i++) {
+			var q = ships[i];
+			if (q) {
+				ret.push(q + " " + kApp.game.ships[i].name);
+			}
+		}
+		if (ret.length) {
+			ret[ret.length-1] = " and " + ret[ret.length-1]; 
+		}
+		// oxford comma list
+		return ret.join(", ");
+	},
+	
+	shipCount: function(ships, delta) {
+		// way to preclude defense rating for systems
+		if (!delta) {
+			delta = 0;
+		}
+		
+		// system ships
+		var count = 0;
+		for (var i=0; i<ships.length-delta;i++) {
+			count += ships[i];
+		}		
+		return count;
+	}	
+
 };
