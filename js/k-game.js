@@ -267,6 +267,28 @@ kApp.game = {
 		}
 	},
 	
+	shipsInSystem: function(s) {
+		var ret = {};
+		
+		// system ships
+		var count = 0;
+		for (var i=0; i<s.ships.length - 1;i++) {
+			count += s.ships[i];
+		}		
+		ret[s.team] = count;
+		
+		// team ships
+		_.map(s.otherShips, function (ships, team) {
+			var count = 0;
+			for (var i=0; i<ships.length - 1;i++) {
+				count += ships[i];
+			}		
+		    ret[team] = count;
+		});		
+		
+		return ret;
+	},
+	
 	clearSelectedSystemDestinationCount: function() {
 		var selectedSystem = kApp.game.getSelectedSystem();
 		if (selectedSystem != null) {

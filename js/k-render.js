@@ -260,13 +260,17 @@ kApp.render = {
 		}
 	},
 	
-	systemFill: function(s) {
+	teamFill: function(t) {
 		// interior
-		if (s.team === "blue") {
+		if (t === "blue") {
 			fill(100, 110, 200);
 		} else {
 			fill(200, 110, 100);
 		}
+	},
+	
+	systemFill: function(s) {
+		kApp.render.teamFill(s.team);
 	},
 	
 	systemStroke: function(s) {
@@ -350,6 +354,39 @@ kApp.render = {
 			t += " (" + s.rPt + ")"
 		}
 		text(t, cpt.x+15, cpt.y+4);
+
+		// three parts
+		var textMargin = 4;
+		var tPt = kApp.geom.rPt2Cpt(s.rPt);
+		var yship = tPt.y-15;
+		
+		// calc team ships
+		kApp.render.systemFill(s);
+		noStroke();
+		textSize(10);
+		textStyle(NORMAL);
+		textFont("Calibri");
+		var ships = kApp.game.shipsInSystem(s);
+		var teamShips = ships[s.team];
+		var teamShipsWidth = textWidth(teamShips);
+
+		// calc team defense
+		var teamDefense = s.ships[s.ships.length - 1];
+		var teamDefenseWidth = textWidth(teamDefense);
+
+		// render team ships
+		text(teamShips, tPt.x-teamShipsWidth-textMargin-Math.round(teamDefenseWidth/2), yship);
+		
+		// render team defense
+		text(teamDefense, tPt.x-Math.round(teamDefenseWidth/2), yship);
+		
+		// render other ships
+		_.map(ships, function(value, key) {
+			if (key != s.team) {
+				kApp.render.teamFill(key);
+				text(value, tPt.x+Math.round(teamDefenseWidth/2)+textMargin, yship);
+			}
+		});
 	},
 	
 	systems: function() {
