@@ -163,10 +163,6 @@ kApp.events = {
 		kApp.data.showSystem();
 	},
 	
-	info: function() {
-		
-	},
-	
 	selectSystem: function(s) {
 		if (!s || !s.selected) {
 			//kApp.log("clearingSystems");

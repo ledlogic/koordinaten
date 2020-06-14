@@ -16,16 +16,6 @@ kApp.controls = {
 			kApp.events.build();
 		});
 
-		var $enter = $("#enter");
-		$enter.on('click',function(e) {
-			kApp.events.cmdEnter();
-		});
-
-		var $info = $("#info");
-		$info.on('click',function(e) {
-			kApp.events.info();
-		});
-
 		var $move = $("#move");
 		$move.on('click',function(e) {
 			kApp.events.move();
