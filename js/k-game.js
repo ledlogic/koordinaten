@@ -394,7 +394,8 @@ kApp.game = {
 		kApp.game.logisticGrowthCalc();
 		
 		// start new turn / restart time
-		setTimeout("kApp.game.start()", 5000);
+		//setTimeout("kApp.game.start()", 5000);
+		setTimeout("kApp.game.start()", 100);
 	},
 	
 	resolveBattles: function() {
@@ -436,34 +437,44 @@ kApp.game = {
 				if (count) {
 					kApp.news.addDefenseShipsDest(system, defenseShipsDest);
 				}
-			}
 			
-			// defending ships
-			if (dv > 0) {
-				_.map(system.otherShips, function(otherShips, team) {
-					var attackShipsDest = [];
-					for (var i=0;i<otherShips.length - 1;i++) {
-						var q = otherShips[i];
-						var d = kApp.game.ships[i].dv;
-						attackShipsDest[i] = Math.min(Math.floor(dv / d), q);
-						dv -= attackShipsDest[i] * d;
-						if (attackShipsDest[i] > 0) {
-							otherShips[i] -= attackShipsDest[i];
+				// defending ships
+				if (dv > 0) {
+					_.map(system.otherShips, function(otherShips, team) {
+						var attackShipsDest = [];
+						for (var i=0;i<otherShips.length - 1;i++) {
+							var q = otherShips[i];
+							var d = kApp.game.ships[i].dv;
+							attackShipsDest[i] = Math.min(Math.floor(dv / d), q);
+							dv -= attackShipsDest[i] * d;
+							if (attackShipsDest[i] > 0) {
+								otherShips[i] -= attackShipsDest[i];
+							}
 						}
-					}
-					var count = kApp.game.shipCount(attackShipsDest, 0);
-					kApp.log("attackShipsDest[" + attackShipsDest + "], count[" + count + "]");
-					if (count) {
-						kApp.news.addAttackerShipsDest(system, team, attackShipsDest);
-					}	
-				});
-			}			
-			
-			// conquer mode
-			if (dv == 0) {
+						var count = kApp.game.shipCount(attackShipsDest, 0);
+						kApp.log("attackShipsDest[" + attackShipsDest + "], count[" + count + "]");
+						if (count) {
+							kApp.news.addAttackerShipsDest(system, team, attackShipsDest);
+						}	
+					});
+				}
 				
+				// conquer mode
+				if (av > 0) {
+					var dv = system.ships[system.ships.length-1];
+					if (av > dv) {
+						kApp.game.systemConquered(system);
+					}
+				}
 			}
 		});
+	},
+	
+	systemConquered: function(system) {
+		kApp.log("system conquered, system.name[" + system.name + "]");
+		// news
+		// transfer ships
+		// update team
 	},
 	
 	newTurn: function() {

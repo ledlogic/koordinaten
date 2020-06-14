@@ -10,13 +10,14 @@ function draw() {
 	} else {
 		//kApp.render.nebula();
 		kApp.render.stars();
-		kApp.render.moves();
-		kApp.render.systems();
 		kApp.render.phenomena();
 		kApp.render.grid();
+		kApp.render.systems();
+		kApp.render.moves();
 		kApp.render.fleets();
-		kApp.render.fps();
 		kApp.render.news();
+		kApp.render.fps();
+		
 		kApp.sprites.update();
 		kApp.game.update();
 	}	
